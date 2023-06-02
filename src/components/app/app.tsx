@@ -1,5 +1,17 @@
-function App(): JSX.Element {
-  return <p>Hello, world!</p>;
+import { Route, Routes } from 'react-router-dom';
+import { browserHistory } from '../../browser-history';
+import HistoryRouter from '../history-route/history-route';
+import CatalogPage from '../../pages/catalog-page/catalog-page';
+import { AppRoute } from '../../conts';
+
+export default function App(): JSX.Element {
+  return (
+    <HistoryRouter history={browserHistory}>
+      <Routes>
+        <Route path={'/'} element={<CatalogPage />}/>
+        <Route path={AppRoute.Catalog} element={<CatalogPage />}/>
+      </Routes>
+    </HistoryRouter>
+  );
 }
 
-export default App;
