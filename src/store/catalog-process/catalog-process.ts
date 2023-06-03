@@ -5,10 +5,12 @@ import { fetchCamerasAction } from '../api-actions';
 
 type CatalogProcess = {
   cameras: Cameras;
+  isLoading: boolean;
 }
 
 const initialState: CatalogProcess = {
   cameras: [],
+  isLoading: false,
 };
 
 export const catalogProcess = createSlice({
@@ -17,8 +19,12 @@ export const catalogProcess = createSlice({
   reducers: {},
   extraReducers(builder) {
     builder
+      .addCase(fetchCamerasAction.pending, (state, action) => {
+        state.isLoading = true;
+      })
       .addCase(fetchCamerasAction.fulfilled, (state, action) => {
         state.cameras = action.payload;
+        state.isLoading = false;
       });
   },
 });
