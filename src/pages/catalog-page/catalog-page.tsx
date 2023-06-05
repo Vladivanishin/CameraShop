@@ -3,19 +3,23 @@ import Catalog from '../../components/catalog/catalog';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getCameras, getLoadingStatus } from '../../store/catalog-process/selectors';
-import { fetchCamerasAction } from '../../store/api-actions';
+import { getCameras, getLoadingStatus, getPromo } from '../../store/catalog-process/selectors';
+import { fetchCameraAction, fetchCamerasAction, fetchPromoAction } from '../../store/api-actions';
 import LoadingPage from '../loading-page/loading-page';
+import { Link, generatePath } from 'react-router-dom';
+import { AppRoute } from '../../conts';
 
 export default function CatalogPage () : JSX.Element{
   const cameras = useAppSelector(getCameras);
   const dispatch = useAppDispatch();
   const isLoading = useAppSelector(getLoadingStatus);
+  const promo = useAppSelector(getPromo);
 
   useEffect(() => {
     let isMounted = true;
     if (isMounted) {
       dispatch(fetchCamerasAction());
+      dispatch(fetchPromoAction());
     }
     return () => {
       isMounted = false;
@@ -26,15 +30,23 @@ export default function CatalogPage () : JSX.Element{
     return <LoadingPage />;
   }
 
+  if(!promo){
+    return <LoadingPage />;
+  }
+
+  function handleCardClick() {
+    dispatch(fetchCameraAction(promo!.id));
+  }
+
   return (
     <div className="wrapper">
       <Header />
       <main>
         <div className="banner">
           <picture>
-            <source type="image/webp" srcSet="img/content/banner-bg.webp, img/content/banner-bg@2x.webp 2x" /><img src="img/content/banner-bg.jpg" srcSet="img/content/banner-bg@2x.jpg 2x" width="1280" height="280" alt="баннер" />
+            <source type="image/webp" srcSet={`${promo.previewImgWebp}, ${promo.previewImgWebp2x} 2x`} /><img src="img/content/banner-bg.jpg" srcSet={`${promo.previewImg2x} 2x`} width="1280" height="280" alt="баннер" />
           </picture>
-          <p className="banner__info"><span className="banner__message">Новинка!</span><span className="title title--h1">Cannonball&nbsp;Pro&nbsp;MX&nbsp;8i</span><span className="banner__text">Профессиональная камера от&nbsp;известного производителя</span><a className="btn" href="#">Подробнее</a></p>
+          <p className="banner__info"><span className="banner__message">Новинка!</span><span className="title title--h1">{promo.name}</span><span className="banner__text">Профессиональная камера от&nbsp;известного производителя</span><Link className="btn" to={generatePath(AppRoute.Product, {id: `${promo.id}`})} onClick={() => handleCardClick()}>Подробнее</Link></p>
         </div>
         <div className="page-content">
           <div className="breadcrumbs">
