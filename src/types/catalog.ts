@@ -66,6 +66,6 @@ export type CouponType = {
 
 export type Order = {
   camerasIds: [number, number];
-  coupon: Coupon | string;
+  coupon: Coupon | null;
 }
 

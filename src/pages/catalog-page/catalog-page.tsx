@@ -3,17 +3,21 @@ import Catalog from '../../components/catalog/catalog';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getCameras, getLoadingStatus, getPromo } from '../../store/catalog-process/selectors';
+import { getCameras, getLoadingStatus, getModalStatus, getPromo } from '../../store/catalog-process/selectors';
 import { fetchCameraAction, fetchCamerasAction, fetchPromoAction } from '../../store/api-actions';
 import LoadingPage from '../loading-page/loading-page';
 import { Link, generatePath } from 'react-router-dom';
 import { AppRoute } from '../../conts';
+import ModalAddBasket from '../../components/modal-add-basket/modal-add-basket';
+
+const body = document.querySelector('body');
 
 export default function CatalogPage () : JSX.Element{
   const cameras = useAppSelector(getCameras);
   const dispatch = useAppDispatch();
   const isLoading = useAppSelector(getLoadingStatus);
   const promo = useAppSelector(getPromo);
+  const isModalActive = useAppSelector(getModalStatus);
 
   useEffect(() => {
     let isMounted = true;
@@ -36,6 +40,12 @@ export default function CatalogPage () : JSX.Element{
 
   function handleCardClick() {
     dispatch(fetchCameraAction(promo!.id));
+  }
+
+  if(isModalActive === true){
+    body?.classList.add('scroll-lock');
+  } else {
+    body?.classList.remove('scroll-lock');
   }
 
   return (
@@ -200,6 +210,7 @@ export default function CatalogPage () : JSX.Element{
             </div>
           </section>
         </div>
+        { isModalActive && <ModalAddBasket />}
       </main>
       <Footer />
     </div>

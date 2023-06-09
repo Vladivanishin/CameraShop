@@ -1,6 +1,8 @@
+export const ITEMS_PER_PAGE = 9;
+
 export enum AppRoute {
   Catalog = '/catalog',
-  Product ='/product',
+  Product ='/product/:id',
   Basket = '/basket'
 }
 
@@ -14,6 +16,8 @@ export enum APIRoute {
 
 export enum NameSpace {
   Catalog = 'CATALOG',
+  Product = 'PRODUCT',
+  Basket = 'BASKET',
 }
 
 export enum CameraType {
