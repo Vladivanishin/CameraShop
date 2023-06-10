@@ -16,6 +16,10 @@ export default function ProductPage (): JSX.Element{
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
+  }, [selectedProduct]);
+
+  useEffect(() => {
     let isMounted = true;
     if (isMounted) {
       dispatch(fetchSimilarAction(selectedProduct!.id));
@@ -115,8 +119,7 @@ export default function ProductPage (): JSX.Element{
                       </div>
                       <div className="tabs__element is-active">
                         <div className="product__tabs-text">
-                          <p>Немецкий концерн BRW разработал видеокамеру Das Auge IV в&nbsp;начале 80-х годов, однако она до&nbsp;сих пор пользуется популярностью среди коллекционеров и&nbsp;яростных почитателей старинной техники.</p>
-                          <p>Вы&nbsp;тоже можете прикоснуться к&nbsp;волшебству аналоговой съёмки, заказав этот чудо-аппарат. Кто знает, может с&nbsp;Das Auge IV&nbsp;начнётся ваш путь к&nbsp;наградам всех престижных кинофестивалей.</p>
+                          <p>{selectedProduct.description}</p>
                         </div>
                       </div>
                     </div>

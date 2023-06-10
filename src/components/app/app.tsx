@@ -16,7 +16,6 @@ export default function App(): JSX.Element {
         <Route path={AppRoute.Product} element={<ProductPage />}/>
         <Route path={AppRoute.Basket} element={<BasketPage />} />
         <Route path={'*'} element={<NotFoundPage />}/>
-        {/* <Route path={'/'} element={<CatalogPage />}/> */}
       </Routes>
     </HistoryRouter>
   );

@@ -12,9 +12,12 @@ type SimilarCardProps = {
 export default function SimilarCard({camera}: SimilarCardProps) : JSX.Element{
   const dispatch = useAppDispatch();
   const isActive = useAppSelector(getModalStatus);
-  const handleCardClick = () => {
+  const handleBuyClick = () => {
     dispatch(selectProduct(camera));
     dispatch(modalAction(!isActive));
+  };
+  const handleMoreClick = () => {
+    dispatch(selectProduct(camera));
   };
   return(
     <div className="product-card is-active">
@@ -48,9 +51,9 @@ export default function SimilarCard({camera}: SimilarCardProps) : JSX.Element{
         </p>
       </div>
       <div className="product-card__buttons">
-        <button className="btn btn--purple product-card__btn" type="button" onClick={() => handleCardClick()}>Купить
+        <button className="btn btn--purple product-card__btn" type="button" onClick={() => handleBuyClick()}>Купить
         </button>
-        <Link className="btn btn--transparent" to={generatePath(AppRoute.Product, { id: `${camera.id}`})} onClick={() => dispatch(selectProduct(camera))}>Подробнее
+        <Link className="btn btn--transparent" to={generatePath(AppRoute.Product, { id: `${camera.id}`})} onClick={() => handleMoreClick()}>Подробнее
         </Link>
       </div>
     </div>

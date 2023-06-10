@@ -43,3 +43,8 @@ export enum Coupon {
   Camera444 = 'camera-444',
   Camera555 = 'camera-555',
 }
+
+export enum ProductTab {
+  Specifications = 'Характеристики',
+  Description = 'Описание',
+}

@@ -12,9 +12,12 @@ type CardProps = {
 export default function Card ({camera}: CardProps) : JSX.Element {
   const dispatch = useAppDispatch();
   const isActive = useAppSelector(getModalStatus);
-  const handleCardClick = () => {
+  const handleBuyClick = () => {
     dispatch(selectProduct(camera));
     dispatch(modalAction(!isActive));
+  };
+  const handleMoreClick = () => {
+    dispatch(selectProduct(camera));
   };
 
   return(
@@ -49,9 +52,12 @@ export default function Card ({camera}: CardProps) : JSX.Element {
         </p>
       </div>
       <div className="product-card__buttons">
-        <button className="btn btn--purple product-card__btn" type="button" onClick={() => handleCardClick()}>Купить
+        <button className="btn btn--purple product-card__btn" type="button" onClick={() => handleBuyClick()}>Купить
         </button>
-        <Link className="btn btn--transparent" to={generatePath(AppRoute.Product, { id: `${camera.id}`})} onClick={() => dispatch(selectProduct(camera))}>Подробнее
+        <Link className="btn btn--transparent"
+          onClick={() => handleMoreClick()}
+          to={generatePath(AppRoute.Product, { id: `${camera.id}`})}
+        >Подробнее
         </Link>
       </div>
     </div>
