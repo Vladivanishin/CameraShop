@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
 import { useAppDispatch, useAppSelector } from '../../hooks';
@@ -7,27 +7,24 @@ import LoadingPage from '../loading-page/loading-page';
 import { AppRoute } from '../../conts';
 import Similar from '../../components/similar/similar';
 import { getSimilarCameras } from '../../store/product-process/selectors';
-import { fetchSimilarAction } from '../../store/api-actions';
+import { fetchCameraAction, fetchSimilarAction } from '../../store/api-actions';
 import { useEffect } from 'react';
 
 export default function ProductPage (): JSX.Element{
   const selectedProduct = useAppSelector(getSelectedProduct);
   const similarCameras = useAppSelector(getSimilarCameras);
   const dispatch = useAppDispatch();
+  const { id } = useParams();
+  const cameraId = Number(id);
 
   useEffect(() => {
     window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
-  }, [selectedProduct]);
+  }, []);
 
   useEffect(() => {
-    let isMounted = true;
-    if (isMounted) {
-      dispatch(fetchSimilarAction(selectedProduct!.id));
-    }
-    return () => {
-      isMounted = false;
-    };
-  },[dispatch, selectedProduct]);
+    dispatch(fetchSimilarAction(cameraId));
+    dispatch(fetchCameraAction(cameraId));
+  },[cameraId, dispatch]);
 
   if(!selectedProduct){
     return <LoadingPage />;

@@ -1,19 +1,18 @@
 import { useEffect } from 'react';
-import Catalog from '../../components/catalog/catalog';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getCameras, getLoadingStatus, getModalStatus, getPromo } from '../../store/catalog-process/selectors';
+import { getLoadingStatus, getModalStatus, getPromo } from '../../store/catalog-process/selectors';
 import { fetchCameraAction, fetchCamerasAction, fetchPromoAction } from '../../store/api-actions';
 import LoadingPage from '../loading-page/loading-page';
 import { Link, generatePath } from 'react-router-dom';
 import { AppRoute } from '../../conts';
 import ModalAddBasket from '../../components/modal-add-basket/modal-add-basket';
+import { PaginateCatalog } from '../../components/paginate-catalog/paginate-catalog';
 
 const body = document.querySelector('body');
 
 export default function CatalogPage () : JSX.Element{
-  const cameras = useAppSelector(getCameras);
   const dispatch = useAppDispatch();
   const isLoading = useAppSelector(getLoadingStatus);
   const promo = useAppSelector(getPromo);
@@ -101,7 +100,7 @@ export default function CatalogPage () : JSX.Element{
                         <legend className="title title--h5">Категория</legend>
                         <div className="custom-checkbox catalog-filter__item">
                           <label>
-                            <input type="checkbox" name="photocamera" /><span className="custom-checkbox__icon"></span><span className="custom-checkbox__label">Фотокамера</span>
+                            <input type="checkbox" name="photocamera" readOnly/><span className="custom-checkbox__icon"></span><span className="custom-checkbox__label">Фотокамера</span>
                           </label>
                         </div>
                         <div className="custom-checkbox catalog-filter__item">
@@ -163,7 +162,7 @@ export default function CatalogPage () : JSX.Element{
                         <p className="title title--h5">Сортировать:</p>
                         <div className="catalog-sort__type">
                           <div className="catalog-sort__btn-text">
-                            <input type="radio" id="sortPrice" name="sort" checked />
+                            <input type="radio" id="sortPrice" name="sort" readOnly />
                             <label htmlFor="sortPrice">по цене</label>
                           </div>
                           <div className="catalog-sort__btn-text">
@@ -173,7 +172,7 @@ export default function CatalogPage () : JSX.Element{
                         </div>
                         <div className="catalog-sort__order">
                           <div className="catalog-sort__btn catalog-sort__btn--up">
-                            <input type="radio" id="up" name="sort-icon" checked aria-label="По возрастанию" />
+                            <input type="radio" id="up" name="sort-icon" readOnly aria-label="По возрастанию" />
                             <label htmlFor="up">
                               <svg width="16" height="14" aria-hidden="true">
                                 <use xlinkHref="#icon-sort"></use>
@@ -192,19 +191,7 @@ export default function CatalogPage () : JSX.Element{
                       </div>
                     </form>
                   </div>
-                  <Catalog cameras={cameras}/>
-                  <div className="pagination">
-                    <ul className="pagination__list">
-                      <li className="pagination__item"><a className="pagination__link pagination__link--active" href="1">1</a>
-                      </li>
-                      <li className="pagination__item"><a className="pagination__link" href="2">2</a>
-                      </li>
-                      <li className="pagination__item"><a className="pagination__link" href="3">3</a>
-                      </li>
-                      <li className="pagination__item"><a className="pagination__link pagination__link--text" href="2">Далее</a>
-                      </li>
-                    </ul>
-                  </div>
+                  <PaginateCatalog />
                 </div>
               </div>
             </div>
