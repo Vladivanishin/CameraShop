@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { NameSpace } from '../../conts';
 import { Camera, Cameras, Promo } from '../../types/catalog';
-import { fetchCameraAction, fetchCamerasAction, fetchPromoAction } from '../api-actions';
+import { fetchCameraAction, fetchCamerasAction, fetchPostReviewAction, fetchPromoAction } from '../api-actions';
 
 type CatalogProcess = {
   cameras: Cameras;
@@ -9,6 +9,8 @@ type CatalogProcess = {
   promo: Promo | undefined;
   product: Camera | undefined;
   isModalOpen: boolean;
+  isModalReview: boolean;
+  isModalSuccess: boolean;
 }
 
 const initialState: CatalogProcess = {
@@ -17,6 +19,8 @@ const initialState: CatalogProcess = {
   promo: undefined,
   product: undefined,
   isModalOpen: false,
+  isModalReview: false,
+  isModalSuccess: false,
 };
 
 export const catalogProcess = createSlice({
@@ -28,6 +32,12 @@ export const catalogProcess = createSlice({
     },
     modalAction: (state, action: PayloadAction<boolean>) => {
       state.isModalOpen = action.payload;
+    },
+    modalReview: (state, action: PayloadAction<boolean>) => {
+      state.isModalReview = action.payload;
+    },
+    modalSuccess: (state, action: PayloadAction<boolean>) => {
+      state.isModalSuccess = action.payload;
     },
   },
   extraReducers(builder) {
@@ -54,8 +64,16 @@ export const catalogProcess = createSlice({
       .addCase(fetchCameraAction.fulfilled,(state, action) => {
         state.isLoading = false;
         state.product = action.payload;
+      })
+      .addCase(fetchPostReviewAction.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchPostReviewAction.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isModalReview = false;
+        state.isModalSuccess = true;
       });
   },
 });
 
-export const {selectProduct, modalAction} = catalogProcess.actions;
+export const {selectProduct, modalAction, modalReview, modalSuccess} = catalogProcess.actions;

@@ -1,4 +1,5 @@
 export const ITEMS_PER_PAGE = 9;
+export const MAX_REVIEWS_COUNT = 3;
 
 export enum AppRoute {
   Catalog = '/catalog',
@@ -44,7 +45,7 @@ export enum Coupon {
   Camera555 = 'camera-555',
 }
 
-export enum ProductTab {
+export enum TabsControl {
   Specifications = 'Характеристики',
   Description = 'Описание',
 }

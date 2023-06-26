@@ -16,3 +16,9 @@ export const getSelectedProduct = (state: State) : Camera | undefined =>
 
 export const getModalStatus = (state: State) : boolean =>
   state[NameSpace.Catalog].isModalOpen;
+
+export const getModalReviewStatus = (state: State) : boolean =>
+  state[NameSpace.Catalog].isModalReview;
+
+export const getModalSuccess = (state: State) : boolean =>
+  state[NameSpace.Catalog].isModalSuccess;

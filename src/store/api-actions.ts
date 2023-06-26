@@ -87,9 +87,9 @@ export const fetchPostReviewAction = createAsyncThunk<
 ReviewResponse,
 ReviewRequest,
 ThunkConfig
->('fetchPostReviewAction', async ({cameraId,userName,advantage,disadvantage,review,rating},{dispatch, extra: api}) => {
+>('fetchPostReviewAction', async (newReview,{dispatch, extra: api}) => {
   try {
-    const {data} = await api.post<ReviewResponse>(APIRoute.Reviews, {cameraId,userName,advantage,disadvantage,review,rating});
+    const {data} = await api.post<ReviewResponse>(APIRoute.Reviews, (newReview));
     return data;
   } catch (error){
     notify('Отзыв не отправлен! Пожалуйста повторите.');

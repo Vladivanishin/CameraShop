@@ -10,6 +10,7 @@ export default function ModalAddBasket() : JSX.Element {
   if(!selectedProduct){
     return <LoadingPage />;
   }
+
   return (
     <div className="modal is-active">
       <div className="modal__wrapper">
