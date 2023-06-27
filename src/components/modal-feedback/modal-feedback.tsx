@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useRef, useState } from 'react';
+import React, { FormEvent, useEffect, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { modalReview } from '../../store/catalog-process/catalog-process';
 import { getModalReviewStatus, getSelectedProduct } from '../../store/catalog-process/selectors';
@@ -48,14 +48,15 @@ export default function ModalFeedback() : JSX.Element{
     }
   };
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
-    const handleClose = (evt: React.KeyboardEvent<HTMLDivElement>) => {
-      if (evt.key === 'Escape') {
+    const handleOverlayClick = (evt: React.MouseEvent<HTMLDivElement>) => {
+      if (modalRef.current && !modalRef.current.contains(evt.target as Node)) {
         dispatch(modalReview(!isModalReview));
       }
     };
-    const handleOverlayClick = (evt: React.MouseEvent<HTMLDivElement>) => {
-      if (modalRef.current && !modalRef.current.contains(evt.target as Node)) {
+    const handleClose = (evt: React.KeyboardEvent<HTMLDivElement>) => {
+      if (evt.key === 'Escape') {
         dispatch(modalReview(!isModalReview));
       }
     };
@@ -66,7 +67,7 @@ export default function ModalFeedback() : JSX.Element{
       document.removeEventListener('mousedown', handleOverlayClick);
       document.removeEventListener('keydown', handleClose);
     };
-  },[dispatch, isModalReview]);
+  },[dispatch, isModalReview, modalRef]);
 
   return(
     <div className="modal is-active">

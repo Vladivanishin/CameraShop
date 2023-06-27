@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, ReactNode } from 'react';
+import React, { useEffect, useRef, ReactNode, useState } from 'react';
 
 interface ModalProps {
   isOpen: boolean;
@@ -6,7 +6,7 @@ interface ModalProps {
   children: ReactNode;
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
+export default function Modal ({ isOpen, onClose, children }: ModalProps) : JSX.Element {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -14,7 +14,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
     setIsModalOpen(isOpen);
   }, [isOpen]);
 
-  const handleClose = (event: React.KeyboardEvent<HTMLDivElement>) => {
+  const handleEscClose = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === 'Escape') {
       onClose();
     }
@@ -36,7 +36,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
         aria-labelledby="modal-title"
         aria-describedby="modal-description"
         onClick={handleOverlayClick}
-        onKeyDown={handleClose}
+        onKeyDown={handleEscClose}
         ref={modalRef}
       >
         <div className="modal__wrapper">
@@ -48,6 +48,5 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
       </div>
     </div>
   );
-};
+}
 
-export default Modal;
