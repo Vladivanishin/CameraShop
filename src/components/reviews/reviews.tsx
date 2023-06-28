@@ -10,7 +10,6 @@ import { modalReview } from '../../store/catalog-process/catalog-process';
 export default function Reviews() : JSX.Element{
   const reviews = useAppSelector(getReviews);
   const dispatch = useAppDispatch();
-  // const isModalActive = useAppSelector(getModalStatus);
   const isModalReview = useAppSelector(getModalReviewStatus);
   const [count, setCount] = useState(MAX_REVIEWS_COUNT);
   const sortedReviews = [...reviews].sort((a, b) => dayjs(b.createAt).diff(a.createAt));
