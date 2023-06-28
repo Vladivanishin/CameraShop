@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, ReactNode, useState } from 'react';
+import React, { useEffect, useRef, ReactNode, useCallback } from 'react';
 
 interface ModalProps {
   isOpen: boolean;
@@ -7,36 +7,36 @@ interface ModalProps {
 }
 
 export default function Modal ({ isOpen, onClose, children }: ModalProps) : JSX.Element {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
 
+  const handleEscapeKeydown = useCallback((evt: KeyboardEvent) => {
+    if (evt.key === 'Escape') {
+      onClose();
+    }
+  }, [onClose]);
+
   useEffect(() => {
-    setIsModalOpen(isOpen);
-  }, [isOpen]);
-
-  const handleEscClose = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    if (event.key === 'Escape') {
-      onClose();
+    if (isOpen && modalRef.current) {
+      document.body.style.overflow = 'hidden';
+      document.addEventListener('keydown', handleEscapeKeydown);
     }
-  };
 
-  const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-      onClose();
-    }
-  };
+    return () => {
+      document.body.style.overflow = '';
+      document.removeEventListener('keydown', handleEscapeKeydown);
+    };
+  }, [isOpen, handleEscapeKeydown]);
+
 
   return (
     <div>
       <div
-        className={`modal ${isModalOpen ? 'is-active' : ''}`}
+        className={`modal ${isOpen ? 'is-active' : ''}`}
         tabIndex={-1}
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-title"
         aria-describedby="modal-description"
-        onClick={handleOverlayClick}
-        onKeyDown={handleEscClose}
         ref={modalRef}
       >
         <div className="modal__wrapper">

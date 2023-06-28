@@ -11,13 +11,11 @@ import { fetchCameraAction, fetchReviewsAction, fetchSimilarAction } from '../..
 import { useEffect } from 'react';
 import { selectTabsControl } from '../../store/product-process/product-process';
 import { formatPrice, handleScrollTopClick } from '../../utils';
-import { modalAction, modalReview, selectProduct } from '../../store/catalog-process/catalog-process';
+import { modalAction, selectProduct } from '../../store/catalog-process/catalog-process';
 import ModalAddBasket from '../../components/modal-add-basket/modal-add-basket';
 import Reviews from '../../components/reviews/reviews';
 import ModalFeedback from '../../components/modal-feedback/modal-feedback';
 import ModalSuccess from '../../components/modal-success/modal-success';
-import Modal from '../../components/modal/modal';
-import ModalReview from '../../components/modal-review/modal-review';
 
 const body = document.querySelector('body');
 
@@ -171,11 +169,6 @@ export default function ProductPage (): JSX.Element{
         </svg>
       </button>
       { isModalActive && <ModalAddBasket />}
-      {/* { isModalReview && <Modal
-        isOpen={isModalReview}
-        onClose={dispatch(modalReview(!isModalReview))}
-        children={<ModalReview />}
-        />} */}
       { isModalReview && <ModalFeedback />}
       { isModalSuccess && <ModalSuccess />}
       <Footer />

@@ -50,12 +50,12 @@ export default function ModalFeedback() : JSX.Element{
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
-    const handleOverlayClick = (evt: React.MouseEvent<HTMLDivElement>) => {
+    const handleOverlayClick = (evt: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(evt.target as Node)) {
         dispatch(modalReview(!isModalReview));
       }
     };
-    const handleClose = (evt: React.KeyboardEvent<HTMLDivElement>) => {
+    const handleClose = (evt: KeyboardEvent) => {
       if (evt.key === 'Escape') {
         dispatch(modalReview(!isModalReview));
       }
