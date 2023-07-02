@@ -14,8 +14,8 @@ export const getPromo = (state: State): Promo | undefined =>
 export const getSelectedProduct = (state: State) : Camera | undefined =>
   state[NameSpace.Catalog].product;
 
-export const getModalStatus = (state: State) : boolean =>
-  state[NameSpace.Catalog].isModalOpen;
+export const getModalBuyStatus = (state: State) : boolean =>
+  state[NameSpace.Catalog].isModalBuy;
 
 export const getModalReviewStatus = (state: State) : boolean =>
   state[NameSpace.Catalog].isModalReview;

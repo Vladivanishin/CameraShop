@@ -2,7 +2,7 @@ import { Link, useParams } from 'react-router-dom';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getModalReviewStatus, getModalStatus, getModalSuccess, getSelectedProduct } from '../../store/catalog-process/selectors';
+import { getModalBuyStatus, getModalReviewStatus, getModalSuccess, getSelectedProduct } from '../../store/catalog-process/selectors';
 import LoadingPage from '../loading-page/loading-page';
 import { AppRoute, TabsControl } from '../../conts';
 import Similar from '../../components/similar/similar';
@@ -11,11 +11,11 @@ import { fetchCameraAction, fetchReviewsAction, fetchSimilarAction } from '../..
 import { useEffect } from 'react';
 import { selectTabsControl } from '../../store/product-process/product-process';
 import { formatPrice, handleScrollTopClick } from '../../utils';
-import { modalAction, selectProduct } from '../../store/catalog-process/catalog-process';
-import ModalAddBasket from '../../components/modal-add-basket/modal-add-basket';
+import { modalBuy, selectProduct } from '../../store/catalog-process/catalog-process';
 import Reviews from '../../components/reviews/reviews';
-import ModalFeedback from '../../components/modal-feedback/modal-feedback';
 import ModalSuccess from '../../components/modal-success/modal-success';
+import ModalReview from '../../components/modal-review/modal-review';
+import ModalBuy from '../../components/modal-buy/modal-buy';
 
 const body = document.querySelector('body');
 
@@ -26,7 +26,7 @@ export default function ProductPage (): JSX.Element{
   const { id } = useParams();
   const cameraId = Number(id);
   const currentTabControl = useAppSelector(getCurrentTabControl);
-  const isModalActive = useAppSelector(getModalStatus);
+  const isModalBuy = useAppSelector(getModalBuyStatus);
   const isModalReview = useAppSelector(getModalReviewStatus);
   const isModalSuccess = useAppSelector(getModalSuccess);
   const reviews = useAppSelector(getReviews);
@@ -47,10 +47,10 @@ export default function ProductPage (): JSX.Element{
 
   const handleBuyClick = () => {
     dispatch(selectProduct(selectedProduct));
-    dispatch(modalAction(!isModalActive));
+    dispatch(modalBuy(!isModalBuy));
   };
 
-  if(isModalActive === true || isModalReview === true || isModalSuccess === true){
+  if(isModalBuy === true || isModalReview === true || isModalSuccess === true){
     body?.classList.add('scroll-lock');
   } else {
     body?.classList.remove('scroll-lock');
@@ -120,16 +120,18 @@ export default function ProductPage (): JSX.Element{
                   </button>
                   <div className="tabs product__tabs">
                     <div className="tabs__controls product__tabs-controls">
-                      <button className={`tabs__control ${currentTabControl === TabsControl.Specifications ? 'is-active' : ''}`}
+                      <Link className={`tabs__control ${currentTabControl === TabsControl.Specifications ? 'is-active' : ''}`}
                         type="button"
                         onClick={() => dispatch(selectTabsControl(TabsControl.Specifications))}
+                        to={'?specifications'}
                       >Характеристики
-                      </button>
-                      <button className={`tabs__control ${currentTabControl === TabsControl.Description ? 'is-active' : ''}`}
+                      </Link>
+                      <Link className={`tabs__control ${currentTabControl === TabsControl.Description ? 'is-active' : ''}`}
                         type="button"
                         onClick={() => dispatch(selectTabsControl(TabsControl.Description))}
+                        to={'?description'}
                       >Описание
-                      </button>
+                      </Link>
                     </div>
                     <div className="tabs__content">
                       <div className={`tabs__element ${currentTabControl === TabsControl.Specifications ? 'is-active' : ''}`}>
@@ -168,8 +170,8 @@ export default function ProductPage (): JSX.Element{
           <use xlinkHref="#icon-arrow2"></use>
         </svg>
       </button>
-      { isModalActive && <ModalAddBasket />}
-      { isModalReview && <ModalFeedback />}
+      { isModalBuy && <ModalBuy />}
+      { isModalReview && <ModalReview />}
       { isModalSuccess && <ModalSuccess />}
       <Footer />
     </div>

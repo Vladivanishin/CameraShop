@@ -2,8 +2,8 @@ import { Link, generatePath } from 'react-router-dom';
 import { Camera } from '../../types/catalog';
 import { AppRoute } from '../../conts';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { modalAction, selectProduct } from '../../store/catalog-process/catalog-process';
-import { getModalStatus } from '../../store/catalog-process/selectors';
+import { modalBuy, selectProduct } from '../../store/catalog-process/catalog-process';
+import { getModalBuyStatus } from '../../store/catalog-process/selectors';
 import { formatPrice } from '../../utils';
 
 type CardProps = {
@@ -12,10 +12,10 @@ type CardProps = {
 
 export default function Card ({camera}: CardProps) : JSX.Element {
   const dispatch = useAppDispatch();
-  const isActive = useAppSelector(getModalStatus);
+  const isActive = useAppSelector(getModalBuyStatus);
   const handleBuyClick = () => {
     dispatch(selectProduct(camera));
-    dispatch(modalAction(!isActive));
+    dispatch(modalBuy(!isActive));
   };
   const handleMoreClick = () => {
     dispatch(selectProduct(camera));

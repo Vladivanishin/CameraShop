@@ -2,13 +2,13 @@ import { useEffect } from 'react';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getLoadingStatus, getModalStatus, getPromo } from '../../store/catalog-process/selectors';
+import { getLoadingStatus, getModalBuyStatus, getPromo } from '../../store/catalog-process/selectors';
 import { fetchCameraAction, fetchCamerasAction, fetchPromoAction } from '../../store/api-actions';
 import LoadingPage from '../loading-page/loading-page';
 import { Link, generatePath } from 'react-router-dom';
 import { AppRoute } from '../../conts';
-import ModalAddBasket from '../../components/modal-add-basket/modal-add-basket';
 import { PaginateCatalog } from '../../components/paginate-catalog/paginate-catalog';
+import ModalBuy from '../../components/modal-buy/modal-buy';
 
 const body = document.querySelector('body');
 
@@ -16,17 +16,11 @@ export default function CatalogPage () : JSX.Element{
   const dispatch = useAppDispatch();
   const isLoading = useAppSelector(getLoadingStatus);
   const promo = useAppSelector(getPromo);
-  const isModalActive = useAppSelector(getModalStatus);
+  const isModalActive = useAppSelector(getModalBuyStatus);
 
   useEffect(() => {
-    let isMounted = true;
-    if (isMounted) {
-      dispatch(fetchCamerasAction());
-      dispatch(fetchPromoAction());
-    }
-    return () => {
-      isMounted = false;
-    };
+    dispatch(fetchCamerasAction());
+    dispatch(fetchPromoAction());
   },[dispatch]);
 
   if(isLoading){
@@ -197,7 +191,7 @@ export default function CatalogPage () : JSX.Element{
             </div>
           </section>
         </div>
-        { isModalActive && <ModalAddBasket />}
+        { isModalActive && <ModalBuy />}
       </main>
       <Footer />
     </div>

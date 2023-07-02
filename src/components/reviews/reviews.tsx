@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getReviews } from '../../store/product-process/selectors';
 import ReviewsList from '../review-list/review-list';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { MAX_REVIEWS_COUNT } from '../../conts';
 import { getModalReviewStatus } from '../../store/catalog-process/selectors';
 import { modalReview } from '../../store/catalog-process/catalog-process';
@@ -12,7 +12,7 @@ export default function Reviews() : JSX.Element{
   const dispatch = useAppDispatch();
   const isModalReview = useAppSelector(getModalReviewStatus);
   const [count, setCount] = useState(MAX_REVIEWS_COUNT);
-  const sortedReviews = [...reviews].sort((a, b) => dayjs(b.createAt).diff(a.createAt));
+  const sortedReviews = useMemo(() => [...reviews].sort((a, b) => dayjs(b.createAt).diff(a.createAt)) ,[reviews]);
   const currentReviews = sortedReviews.slice(0, count);
 
   return(

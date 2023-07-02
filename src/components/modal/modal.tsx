@@ -1,4 +1,7 @@
+import FocusTrap from 'focus-trap-react';
 import React, { useEffect, useRef, ReactNode, useCallback } from 'react';
+import { useAppSelector } from '../../hooks';
+import { getModalSuccess } from '../../store/catalog-process/selectors';
 
 interface ModalProps {
   isOpen: boolean;
@@ -7,6 +10,7 @@ interface ModalProps {
 }
 
 export default function Modal ({ isOpen, onClose, children }: ModalProps) : JSX.Element {
+  const isModalSuccess = useAppSelector(getModalSuccess);
   const modalRef = useRef<HTMLDivElement>(null);
 
   const handleEscapeKeydown = useCallback((evt: KeyboardEvent) => {
@@ -14,38 +18,45 @@ export default function Modal ({ isOpen, onClose, children }: ModalProps) : JSX.
       onClose();
     }
   }, [onClose]);
+  const handleOverlayClick = useCallback((evt: MouseEvent) => {
+    if (modalRef.current && !modalRef.current.contains(evt.target as Node)) {
+      onClose();
+    }
+  }, [onClose]);
 
   useEffect(() => {
     if (isOpen && modalRef.current) {
-      document.body.style.overflow = 'hidden';
       document.addEventListener('keydown', handleEscapeKeydown);
+      document.addEventListener('mousedown', handleOverlayClick);
     }
 
     return () => {
-      document.body.style.overflow = '';
       document.removeEventListener('keydown', handleEscapeKeydown);
+      document.addEventListener('mousedown', handleOverlayClick);
     };
-  }, [isOpen, handleEscapeKeydown]);
+  }, [isOpen, handleEscapeKeydown, handleOverlayClick]);
 
 
   return (
     <div>
-      <div
-        className={`modal ${isOpen ? 'is-active' : ''}`}
-        tabIndex={-1}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="modal-title"
-        aria-describedby="modal-description"
-        ref={modalRef}
-      >
-        <div className="modal__wrapper">
-          <div className="modal-overlay" />
-          <div className="modal-content">
-            {children}
+      <FocusTrap>
+        <div
+          className={`modal ${isOpen ? 'is-active' : ''} ${isModalSuccess ? 'modal--narrow' : ''}`}
+          tabIndex={-1}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="modal-title"
+          aria-describedby="modal-description"
+        >
+          <div className="modal__wrapper">
+            <div className="modal__overlay">
+            </div>
+            <div className="modal__content" ref={modalRef}>
+              {children}
+            </div>
           </div>
         </div>
-      </div>
+      </FocusTrap>
     </div>
   );
 }

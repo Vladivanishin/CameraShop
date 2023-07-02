@@ -16,7 +16,7 @@ export const fetchCamerasAction = createAsyncThunk<
   Cameras,
   undefined,
   ThunkConfig
->('fetchCamerasAction', async (_arg, { dispatch, extra: api }) => {
+>('fetchCamerasAction', async (_arg, { extra: api }) => {
   try {
     const { data: cameras } = await api.get<Cameras>(APIRoute.Cameras);
     return cameras;
@@ -30,7 +30,7 @@ export const fetchCameraAction = createAsyncThunk<
 Camera,
 number,
 ThunkConfig
->('fetchCameraAction', async (cameraId, {dispatch, extra: api}) => {
+>('fetchCameraAction', async (cameraId, { extra: api}) => {
   try {
     const {data: camera} = await api.get<Camera>(`${APIRoute.Cameras}/${cameraId}`);
     return camera;
@@ -45,7 +45,7 @@ export const fetchSimilarAction = createAsyncThunk<
 Cameras,
 number,
 ThunkConfig
->('fetchSimilarAction', async (cameraId, {dispatch, extra: api}) => {
+>('fetchSimilarAction', async (cameraId, { extra: api}) => {
   try {
     const {data: camera} = await api.get<Cameras>(`${APIRoute.Cameras}/${cameraId}/similar`);
     return camera;
@@ -59,7 +59,7 @@ export const fetchPromoAction = createAsyncThunk<
 Promo,
 undefined,
 ThunkConfig
->('fetchPromoAction', async (_arg, {dispatch, extra: api}) => {
+>('fetchPromoAction', async (_arg, { extra: api}) => {
   try {
     const {data: promo} = await api.get<Promo>(APIRoute.Promo);
     return promo;
@@ -73,7 +73,7 @@ export const fetchReviewsAction = createAsyncThunk<
 Reviews,
 number,
 ThunkConfig
->('fetchReviewsAction', async (cameraId, {dispatch, extra: api}) => {
+>('fetchReviewsAction', async (cameraId, { extra: api}) => {
   try {
     const {data: reviews} = await api.get<Reviews>(`${APIRoute.Cameras}/${cameraId}/reviews`);
     return reviews;
@@ -87,7 +87,7 @@ export const fetchPostReviewAction = createAsyncThunk<
 ReviewResponse,
 ReviewRequest,
 ThunkConfig
->('fetchPostReviewAction', async (newReview,{dispatch, extra: api}) => {
+>('fetchPostReviewAction', async (newReview,{ extra: api}) => {
   try {
     const {data} = await api.post<ReviewResponse>(APIRoute.Reviews, (newReview));
     return data;
@@ -101,7 +101,7 @@ export const fetchPostCouponAction = createAsyncThunk<
 string,
 CouponType,
 ThunkConfig
->('fetchPostCouponAction', async ({coupon}, {dispatch, extra: api}) => {
+>('fetchPostCouponAction', async ({coupon}, { extra: api}) => {
   try {
     const {data} = await api.post<string>(APIRoute.Coupons, {coupon});
     return data;
@@ -115,7 +115,7 @@ export const fetchPostNewOrderAction = createAsyncThunk<
 void,
 Order,
 ThunkConfig
->('fetchPostNewOrderAction', async ({camerasIds, coupon}, {dispatch, extra: api}) => {
+>('fetchPostNewOrderAction', async ({camerasIds, coupon}, { extra: api}) => {
   try {
     const {data} = await api.post<void>(APIRoute.Orders, {camerasIds, coupon});
     return data;

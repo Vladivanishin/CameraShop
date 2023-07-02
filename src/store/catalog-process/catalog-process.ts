@@ -8,7 +8,7 @@ type CatalogProcess = {
   isLoading: boolean;
   promo: Promo | undefined;
   product: Camera | undefined;
-  isModalOpen: boolean;
+  isModalBuy: boolean;
   isModalReview: boolean;
   isModalSuccess: boolean;
 }
@@ -18,7 +18,7 @@ const initialState: CatalogProcess = {
   isLoading: false,
   promo: undefined,
   product: undefined,
-  isModalOpen: false,
+  isModalBuy: false,
   isModalReview: false,
   isModalSuccess: false,
 };
@@ -30,8 +30,8 @@ export const catalogProcess = createSlice({
     selectProduct: (state, action: PayloadAction<Camera>) => {
       state.product = action.payload;
     },
-    modalAction: (state, action: PayloadAction<boolean>) => {
-      state.isModalOpen = action.payload;
+    modalBuy: (state, action: PayloadAction<boolean>) => {
+      state.isModalBuy = action.payload;
     },
     modalReview: (state, action: PayloadAction<boolean>) => {
       state.isModalReview = action.payload;
@@ -76,4 +76,4 @@ export const catalogProcess = createSlice({
   },
 });
 
-export const {selectProduct, modalAction, modalReview, modalSuccess} = catalogProcess.actions;
+export const {selectProduct, modalBuy, modalReview, modalSuccess} = catalogProcess.actions;

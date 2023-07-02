@@ -1,14 +1,11 @@
 import { ReviewResponse } from '../../types/catalog';
 import dayjs from 'dayjs';
-import ru from 'dayjs/locale/ru';
 
 type ReviewCardProps = {
   review: ReviewResponse;
 }
 
 export default function ReviewCard({review}: ReviewCardProps): JSX.Element{
-  dayjs.locale(ru);
-
   const date = review.createAt;
   const formatUserDate = dayjs(date).format('DD MMMM');
   const formatDateTime = dayjs(date).format('YYYY-MM-DD');

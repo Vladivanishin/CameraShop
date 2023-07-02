@@ -39,12 +39,6 @@ export enum CameraLevel {
   Pro = 'Профессиональный',
 }
 
-export enum Coupon {
-  Camera333 = 'camera-333',
-  Camera444 = 'camera-444',
-  Camera555 = 'camera-555',
-}
-
 export enum TabsControl {
   Specifications = 'Характеристики',
   Description = 'Описание',

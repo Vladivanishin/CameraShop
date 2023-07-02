@@ -1,4 +1,4 @@
-import { CameraCategory, CameraLevel, CameraType, Coupon } from '../conts';
+import { CameraCategory, CameraLevel, CameraType } from '../conts';
 
 export type Camera = {
   id: number;
@@ -61,11 +61,11 @@ export type ReviewResponse = {
 }
 
 export type CouponType = {
-  coupon: Coupon;
+  coupon: string;
 }
 
 export type Order = {
   camerasIds: [number, number];
-  coupon: Coupon | null;
+  coupon: string | null;
 }
 

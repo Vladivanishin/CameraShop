@@ -1,9 +1,9 @@
 import { Link, generatePath } from 'react-router-dom';
 import { Camera } from '../../types/catalog';
 import { AppRoute } from '../../conts';
-import { modalAction, selectProduct } from '../../store/catalog-process/catalog-process';
+import { modalBuy, selectProduct } from '../../store/catalog-process/catalog-process';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getModalStatus } from '../../store/catalog-process/selectors';
+import { getModalBuyStatus } from '../../store/catalog-process/selectors';
 import { formatPrice, handleScrollTopClick } from '../../utils';
 
 type SimilarCardProps = {
@@ -12,10 +12,10 @@ type SimilarCardProps = {
 
 export default function SimilarCard({camera}: SimilarCardProps) : JSX.Element{
   const dispatch = useAppDispatch();
-  const isActive = useAppSelector(getModalStatus);
+  const isActive = useAppSelector(getModalBuyStatus);
   const handleBuyClick = () => {
     dispatch(selectProduct(camera));
-    dispatch(modalAction(!isActive));
+    dispatch(modalBuy(!isActive));
   };
   const handleMoreClick = () => {
     dispatch(selectProduct(camera));
