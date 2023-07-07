@@ -3,18 +3,16 @@ import { NameSpace, TabsControl } from '../../conts';
 import { Cameras, ReviewResponse } from '../../types/catalog';
 import { fetchPostReviewAction, fetchReviewsAction, fetchSimilarAction } from '../api-actions';
 
-type ProductProcess = {
+export type ProductProcess = {
   similarCameras: Cameras;
   currentTabControl: TabsControl;
   reviews: ReviewResponse[];
-  reviewSuccess: boolean;
 }
 
 const initialState: ProductProcess = {
   similarCameras: [],
   currentTabControl: TabsControl.Description,
   reviews: [],
-  reviewSuccess: false,
 };
 
 export const productProcess = createSlice({

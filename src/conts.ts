@@ -43,3 +43,10 @@ export enum TabsControl {
   Specifications = 'Характеристики',
   Description = 'Описание',
 }
+
+export enum Coupon {
+  First = 'camera-333',
+  Second = 'camera-444',
+  Third = 'camera-555'
+}
+
