@@ -1,7 +1,8 @@
-import FocusTrap from 'focus-trap-react';
-import React, { useEffect, useRef, ReactNode, useCallback } from 'react';
+import { useEffect, useRef, ReactNode, useCallback } from 'react';
 import { useAppSelector } from '../../hooks';
 import { getModalSuccess } from '../../store/catalog-process/selectors';
+import ReactFocusLock from 'react-focus-lock';
+
 
 interface ModalProps {
   isOpen: boolean;
@@ -38,25 +39,27 @@ export default function Modal ({ isOpen, onClose, children }: ModalProps) : JSX.
 
 
   return (
-    <div>
-      <FocusTrap>
-        <div
-          className={`modal ${isOpen ? 'is-active' : ''} ${isModalSuccess ? 'modal--narrow' : ''}`}
-          tabIndex={-1}
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="modal-title"
-          aria-describedby="modal-description"
-        >
-          <div className="modal__wrapper">
-            <div className="modal__overlay">
-            </div>
-            <div className="modal__content" ref={modalRef}>
-              {children}
+    <div data-testid="modal">
+      <div>
+        <ReactFocusLock disabled={!isOpen} returnFocus>
+          <div
+            className={`modal ${isOpen ? 'is-active' : ''} ${isModalSuccess ? 'modal--narrow' : ''}`}
+            tabIndex={-1}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modal-title"
+            aria-describedby="modal-description"
+          >
+            <div className="modal__wrapper">
+              <div className="modal__overlay">
+              </div>
+              <div className="modal__content" ref={modalRef}>
+                {children}
+              </div>
             </div>
           </div>
-        </div>
-      </FocusTrap>
+        </ReactFocusLock>
+      </div>
     </div>
   );
 }

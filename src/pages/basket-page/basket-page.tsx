@@ -3,7 +3,7 @@ import Header from '../../components/header/header';
 
 export default function BasketPage ():JSX.Element{
   return(
-    <div className="wrapper">
+    <div className="wrapper" data-testid='basket-testid'>
       <Header />
       <main>
         <div className="page-content">

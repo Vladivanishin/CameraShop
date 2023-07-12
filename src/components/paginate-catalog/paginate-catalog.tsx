@@ -19,7 +19,7 @@ export const PaginateCatalog = () => {
   const itemsToDisplay = data.slice(startIndex, endIndex);
 
   return (
-    <div>
+    <div data-testid='paginate-catalog'>
       <Catalog cameras={itemsToDisplay}/>
       <div className="pagination">
         <Pagination

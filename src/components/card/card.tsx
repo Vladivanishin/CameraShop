@@ -22,7 +22,7 @@ export default function Card ({camera}: CardProps) : JSX.Element {
   };
 
   return(
-    <div className="product-card">
+    <div className="product-card" data-testid="product-card">
       <div className="product-card__img">
         <picture>
           <source type="image/webp" srcSet={`${camera.previewImgWebp}, ${camera.previewImgWebp2x} 2x`} /><img src={camera.previewImg} srcSet={`${camera.previewImg2x} 2x`} width="280" height="240" alt={camera.name} />
@@ -55,7 +55,7 @@ export default function Card ({camera}: CardProps) : JSX.Element {
       <div className="product-card__buttons">
         <button className="btn btn--purple product-card__btn" type="button" onClick={() => handleBuyClick()}>Купить
         </button>
-        <Link className="btn btn--transparent"
+        <Link className="btn btn--transparent" data-testid="link"
           onClick={() => handleMoreClick()}
           to={generatePath(AppRoute.Product, { id: `${camera.id}`})}
         >Подробнее

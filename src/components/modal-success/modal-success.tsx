@@ -19,10 +19,20 @@ export default function ModalSuccess() : JSX.Element {
           <use xlinkHref="#icon-review-success"></use>
         </svg>
         <div className="modal__buttons">
-          <button className="btn btn--purple modal__btn modal__btn--fit-width" type="button" onClick={() => handleCloseSuccessModal()} tabIndex={1}>Вернуться к покупкам
+          <button className="btn btn--purple modal__btn modal__btn--fit-width"
+            type="button"
+            onClick={() => handleCloseSuccessModal()}
+            tabIndex={1}
+          >Вернуться к покупкам
           </button>
         </div>
-        <button className="cross-btn" type="button" aria-label="Закрыть попап" onClick={() => handleCloseSuccessModal()} tabIndex={1}>
+        <button className="cross-btn"
+          type="button"
+          aria-label="Закрыть попап"
+          onClick={() => handleCloseSuccessModal()}
+          tabIndex={1}
+          data-testid='button'
+        >
           <svg width="10" height="10" aria-hidden="true">
             <use xlinkHref="#icon-close"></use>
           </svg>

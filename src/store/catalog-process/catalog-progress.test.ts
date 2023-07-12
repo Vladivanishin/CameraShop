@@ -1,6 +1,6 @@
 import { makeFakeCamera, makeFakePromo } from '../../mocks';
 import { fetchCameraAction, fetchCamerasAction, fetchPostReviewAction, fetchPromoAction } from '../api-actions';
-import { CatalogProcess, catalogProcess } from './catalog-process';
+import { CatalogProcess, catalogProcess, selectProduct } from './catalog-process';
 
 const cameras = Array.from({length: 5}, makeFakeCamera);
 const promo = makeFakePromo();
@@ -26,6 +26,16 @@ describe('Reducer: catalogProcess', () => {
       .toEqual(state);
   });
 
+  describe('catalogProcess reducers test', () => {
+    it('if use selectProduct', () => {
+      expect(catalogProcess.reducer(state, { type: selectProduct(product).type, payload: product }))
+        .toEqual({
+          ...state,
+          product : product,
+        });
+    });
+
+  });
 
   describe('fetchCamerasAction test', () => {
     it('Should update status to "isLoading" and reload "isError" status, if fetchCamerasAction pending', () => {

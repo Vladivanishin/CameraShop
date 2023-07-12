@@ -8,10 +8,10 @@ export const getCameras = (state: State): Cameras =>
 export const getLoadingStatus = (state: State): boolean =>
   state[NameSpace.Catalog].isLoading;
 
-export const getPromo = (state: State): Promo | undefined =>
+export const getPromo = (state: State): Promo | null =>
   state[NameSpace.Catalog].promo;
 
-export const getSelectedProduct = (state: State) : Camera | undefined =>
+export const getSelectedProduct = (state: State) : Camera | null =>
   state[NameSpace.Catalog].product;
 
 export const getModalBuyStatus = (state: State) : boolean =>

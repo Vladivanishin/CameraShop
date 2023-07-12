@@ -7,7 +7,7 @@ type CatalogProps = {
 
 export default function Catalog ({cameras}: CatalogProps) : JSX.Element{
   return(
-    <div className="cards catalog__cards">
+    <div className="cards catalog__cards" data-testid="cards">
       {cameras.map((camera) => (
         <Card
           key={camera.id}

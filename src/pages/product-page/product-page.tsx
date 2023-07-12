@@ -57,7 +57,7 @@ export default function ProductPage (): JSX.Element{
   }
 
   return (
-    <div className="wrapper">
+    <div className="wrapper" data-testid='product-testid'>
       <Header />
       <main>
         <div className="page-content">

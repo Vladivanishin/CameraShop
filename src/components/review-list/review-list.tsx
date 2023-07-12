@@ -8,7 +8,7 @@ type ReviewListProps = {
 export default function ReviewsList ({reviews}: ReviewListProps): JSX.Element{
 
   return(
-    <ul className="review-block__list">
+    <ul className="review-block__list" data-testid="review-list">
       {reviews.map((review) => (
         <ReviewCard key={review.id} review={review}/>
       ))}

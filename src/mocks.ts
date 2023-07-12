@@ -1,6 +1,11 @@
 import { commerce, datatype, image, lorem, name } from 'faker';
 import { Camera, CouponType, Promo, Review } from './types/catalog';
-import { CameraCategory, CameraLevel, CameraType, Coupon } from './conts';
+import { CameraCategory, CameraLevel, CameraType, Coupon, NameSpace, TabsControl } from './conts';
+import { configureMockStore } from '@jedmao/redux-mock-store';
+import { State } from './types/state';
+import { Action } from 'redux';
+import { createAPI } from './store/services/api';
+import thunk, { ThunkDispatch } from 'redux-thunk';
 
 export const makeFakeCamera = (): Camera => ({
   id: datatype.number(),
@@ -40,4 +45,32 @@ export const makeFakePromo = () : Promo => ({
 
 export const makeFakeCoupon = () : CouponType => ({
   coupon: lorem.word() as Coupon,
+});
+
+export const api = createAPI();
+
+export const middlewares = [thunk.withExtraArgument(api)];
+
+export const mockStore = configureMockStore<
+  State,
+  Action<string>,
+  ThunkDispatch<State, typeof api, Action>
+>(middlewares);
+
+export const makeMockStore = mockStore({
+  [NameSpace.Catalog]: {
+    cameras: [makeFakeCamera()],
+    isLoading: false,
+    isError: false,
+    promo: makeFakePromo(),
+    product: makeFakeCamera(),
+    isModalBuy: false,
+    isModalReview: false,
+    isModalSuccess: false,
+  },
+  [NameSpace.Product]: {
+    similarCameras: [makeFakeCamera()],
+    currentTabControl: TabsControl.Description,
+    reviews: [makeFakeReview()],
+  },
 });

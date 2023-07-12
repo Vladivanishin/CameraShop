@@ -1,15 +1,14 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { browserHistory } from '../../browser-history';
-import HistoryRouter from '../history-route/history-route';
 import CatalogPage from '../../pages/catalog-page/catalog-page';
 import { AppRoute } from '../../conts';
 import NotFoundPage from '../../pages/not-found-page/not-found-page';
 import ProductPage from '../../pages/product-page/product-page';
 import BasketPage from '../../pages/basket-page/basket-page';
+import { HelmetProvider } from 'react-helmet-async';
 
 export default function App(): JSX.Element {
   return (
-    <HistoryRouter history={browserHistory}>
+    <HelmetProvider>
       <Routes>
         <Route path={'/'} element={<Navigate replace to={AppRoute.Catalog} />} />
         <Route path={AppRoute.Catalog} element={<CatalogPage />}/>
@@ -17,7 +16,7 @@ export default function App(): JSX.Element {
         <Route path={AppRoute.Basket} element={<BasketPage />} />
         <Route path={'*'} element={<NotFoundPage />}/>
       </Routes>
-    </HistoryRouter>
+    </HelmetProvider>
   );
 }
 

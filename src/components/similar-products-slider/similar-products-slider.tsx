@@ -1,9 +1,9 @@
-import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
+import { Swiper, SwiperSlide, SwiperRef } from 'swiper/react';
+import 'swiper/swiper.min.css';
 import { useRef, useState } from 'react';
 import clsx from 'clsx';
-import SimilarCard from '../similar-card/similar-card';
 import { Cameras } from '../../types/catalog';
+import SimilarCard from '../similar-card/similar-card';
 
 type SimilarProductsSliderProps = {
   cameras: Cameras;
@@ -17,7 +17,7 @@ export default function SimilarProductsSlider({ cameras }: SimilarProductsSlider
   });
 
   return (
-    <div className="product-similar__slider">
+    <div className="product-similar__slider" data-testid='slider'>
       <Swiper
         onSwiper={(swiper) => { swiperRef.current = swiper; }}
         onSlideChange={(swiper) => {

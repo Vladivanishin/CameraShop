@@ -7,7 +7,7 @@ type SimilarListProps = {
 
 export default function SimilarList ({cameras}: SimilarListProps) : JSX.Element{
   return(
-    <div className="product-similar__slider-list">
+    <div className="product-similar__slider-list" data-testid="similar-list">
       {cameras.map((camera) => (
         <SimilarCard
           key={camera.id}

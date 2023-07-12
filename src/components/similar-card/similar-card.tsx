@@ -28,7 +28,7 @@ export default function SimilarCard({camera}: SimilarCardProps) : JSX.Element{
           <source type="image/webp" srcSet={`${camera.previewImgWebp}, ${camera.previewImgWebp2x} 2x`} /><img src={camera.previewImg} srcSet={`${camera.previewImg2x} 2x`} width="280" height="240" alt={camera.name} />
         </picture>
       </div>
-      <div className="product-card__info">
+      <div className="product-card__info" data-testid="similar-card">
         <div className="rate product-card__rate">
           <svg width="17" height="16" aria-hidden="true">
             <use xlinkHref="#icon-full-star"></use>
