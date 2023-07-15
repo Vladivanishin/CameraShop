@@ -25,14 +25,15 @@ export default function SimilarProductsSlider({ cameras }: SimilarProductsSlider
         }}
         slidesPerView={3}
         slidesPerGroup={3}
-        spaceBetween={0}
-        allowTouchMove={false}
-        wrapperClass='product-similar__slider-list'
+        spaceBetween={32}
+        className='product-similar__slider-list'
 
       >
         {cameras.map((camera) => (
-          <SwiperSlide key={camera.id} className='product-card is-active'>
-            <SimilarCard camera={camera} />
+          <SwiperSlide key={camera.id}>
+            <SimilarCard
+              camera={camera}
+            />
           </SwiperSlide>
         ))}
       </Swiper>
