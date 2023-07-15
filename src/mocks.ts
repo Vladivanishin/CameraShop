@@ -1,6 +1,6 @@
 import { commerce, datatype, image, lorem, name } from 'faker';
 import { Camera, CouponType, Promo, Review } from './types/catalog';
-import { CameraCategory, CameraLevel, CameraType, Coupon, NameSpace, TabsControl } from './conts';
+import { CameraCategory, CameraLevel, CameraType, NameSpace, TabsControl } from './conts';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { State } from './types/state';
 import { Action } from 'redux';
@@ -44,7 +44,7 @@ export const makeFakePromo = () : Promo => ({
 });
 
 export const makeFakeCoupon = () : CouponType => ({
-  coupon: lorem.word() as Coupon,
+  coupon: lorem.word(),
 });
 
 export const api = createAPI();

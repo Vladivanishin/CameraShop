@@ -26,8 +26,8 @@ const store = mockStore({
     reviews: [makeFakeReview()],
   },
 });
-const itemsPerPage = 9;
-const totalItems = 27;
+const currentPage = 1;
+const pageCount = 5;
 
 
 describe('Component: pagination', () => {
@@ -36,7 +36,7 @@ describe('Component: pagination', () => {
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <Pagination itemsPerPage={itemsPerPage} totalItems={totalItems} onPageChange={jest.fn}/>
+          <Pagination currentPage={currentPage} pageCount={pageCount} onPageChange={jest.fn}/>
           <h3>pagination</h3>
         </HistoryRouter>
       </Provider>

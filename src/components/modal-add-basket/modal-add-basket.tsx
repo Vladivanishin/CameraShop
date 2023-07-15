@@ -1,15 +1,17 @@
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import LoadingPage from '../../pages/loading-page/loading-page';
-import { getSelectedProduct } from '../../store/catalog-process/selectors';
+import { modalBuy } from '../../store/catalog-process/catalog-process';
+import { getModalBuyStatus, getSelectedProduct } from '../../store/catalog-process/selectors';
 import { formatPrice } from '../../utils';
 
-type ModalAddBasketProps = {
-  isOpen: boolean;
-  onClose: () => void;
-}
-
-export default function ModalAddBasket({isOpen, onClose}: ModalAddBasketProps) : JSX.Element {
+export default function ModalAddBasket() : JSX.Element {
   const selectedProduct = useAppSelector(getSelectedProduct);
+  const isModalBuy = useAppSelector(getModalBuyStatus);
+  const dispatch = useAppDispatch();
+
+  const handleCloseBuyModal = () => {
+    dispatch(modalBuy(!isModalBuy));
+  };
 
   if(!selectedProduct){
     return <LoadingPage />;
@@ -42,7 +44,7 @@ export default function ModalAddBasket({isOpen, onClose}: ModalAddBasketProps) :
           </svg>Добавить в корзину
         </button>
       </div>
-      <button className="cross-btn" type="button" aria-label="Закрыть попап" onClick={() => onClose()}>
+      <button className="cross-btn" type="button" aria-label="Закрыть попап" onClick={() => handleCloseBuyModal()}>
         <svg width="10" height="10" aria-hidden="true">
           <use xlinkHref="#icon-close"></use>
         </svg>

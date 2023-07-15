@@ -14,7 +14,7 @@ export default function ModalReview() : JSX.Element{
 
   return(
     <Modal isOpen={isModalReview} onClose={handleCloseReviewModal}>
-      <ReviewForm isOpen={isModalReview} onClose={handleCloseReviewModal}/>
+      <ReviewForm />
     </Modal>
   );
 }

@@ -1,22 +1,20 @@
 import { FormEvent, Fragment, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getSelectedProduct } from '../../store/catalog-process/selectors';
+import { getModalReviewStatus, getSelectedProduct } from '../../store/catalog-process/selectors';
 import { fetchPostReviewAction } from '../../store/api-actions';
 import { ReviewRequest } from '../../types/catalog';
 import LoadingPage from '../../pages/loading-page/loading-page';
+import { modalReview } from '../../store/catalog-process/catalog-process';
+import { COUNT_STARS_REVIEW, MIN_LENGTH_COMMENT } from '../../conts';
 
-type ReviewFormProps = {
-  isOpen: boolean;
-  onClose: () => void;
-}
-
-export default function ReviewForm ({isOpen, onClose}: ReviewFormProps) : JSX.Element{
+export default function ReviewForm () : JSX.Element{
   const userNameRef = useRef<HTMLInputElement | null>(null);
   const advantageRef = useRef<HTMLInputElement | null>(null);
   const disadvantageRef = useRef<HTMLInputElement | null>(null);
   const reviewRef = useRef<HTMLTextAreaElement | null>(null);
   const dispatch = useAppDispatch();
   const currentProduct = useAppSelector(getSelectedProduct);
+  const isModalReview = useAppSelector(getModalReviewStatus);
 
   const [rating, setRating] = useState(0);
 
@@ -46,6 +44,10 @@ export default function ReviewForm ({isOpen, onClose}: ReviewFormProps) : JSX.El
     }
   };
 
+  const handleCloseReviewModal = () => {
+    dispatch(modalReview(!isModalReview));
+  };
+
   const ratingProduct: Record<number, string> = {
     5: 'Отлично',
     4: 'Хорошо',
@@ -68,20 +70,20 @@ export default function ReviewForm ({isOpen, onClose}: ReviewFormProps) : JSX.El
               </legend>
               <div className="rate__bar">
                 <div className="rate__group">
-                  {[5, 4, 3, 2, 1].map((rate) => (
-                    <Fragment key={rate}>
+                  {Array.from({length : COUNT_STARS_REVIEW}).map((_, index) => (
+                    <Fragment key={(index + 1).toString()}>
                       <input
                         className="visually-hidden"
-                        id={`star-${rate}`}
+                        id={`star-${COUNT_STARS_REVIEW - index}`}
                         name="rate"
                         type="radio"
-                        value={rate}
-                        onClick={() => handleRatingChange(rate)}
+                        value={COUNT_STARS_REVIEW - index}
+                        onClick={() => handleRatingChange(COUNT_STARS_REVIEW - index)}
                       />
                       <label
                         className='rate__label'
-                        htmlFor={`star-${rate}`}
-                        title={`Оценка ${ratingProduct[rate]}`}
+                        htmlFor={`star-${COUNT_STARS_REVIEW - index}`}
+                        title={`Оценка ${ratingProduct[COUNT_STARS_REVIEW - index]}`}
                       >
                       </label>
                     </Fragment>
@@ -151,7 +153,7 @@ export default function ReviewForm ({isOpen, onClose}: ReviewFormProps) : JSX.El
                 </span>
                 <textarea
                   name="user-comment"
-                  minLength={5}
+                  minLength={MIN_LENGTH_COMMENT}
                   ref={reviewRef}
                   placeholder="Поделитесь своим опытом покупки"
                 >
@@ -163,7 +165,7 @@ export default function ReviewForm ({isOpen, onClose}: ReviewFormProps) : JSX.El
           <button className="btn btn--purple form-review__btn" type="submit">Отправить отзыв</button>
         </form>
       </div>
-      <button className="cross-btn" type="button" aria-label="Закрыть попап" onClick={() => onClose()}>
+      <button className="cross-btn" type="button" aria-label="Закрыть попап" onClick={() => handleCloseReviewModal()}>
         <svg width="10" height="10" aria-hidden="true">
           <use xlinkHref="#icon-close"></use>
         </svg>

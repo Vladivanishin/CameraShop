@@ -44,7 +44,7 @@ export const catalogProcess = createSlice({
   },
   extraReducers(builder) {
     builder
-      .addCase(fetchCamerasAction.pending, (state, action) => {
+      .addCase(fetchCamerasAction.pending, (state) => {
         state.isLoading = true;
         state.isError = false;
       })
@@ -52,10 +52,10 @@ export const catalogProcess = createSlice({
         state.cameras = action.payload;
         state.isLoading = false;
       })
-      .addCase(fetchCamerasAction.rejected, (state, action) => {
+      .addCase(fetchCamerasAction.rejected, (state) => {
         state.isError = true;
       })
-      .addCase(fetchPromoAction.pending, (state, action) => {
+      .addCase(fetchPromoAction.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(fetchPromoAction.fulfilled, (state, action) => {
@@ -64,25 +64,25 @@ export const catalogProcess = createSlice({
         }
         state.promo = action.payload;
       })
-      .addCase(fetchCameraAction.pending,(state, action) => {
+      .addCase(fetchCameraAction.pending,(state) => {
         state.isLoading = true;
       })
       .addCase(fetchCameraAction.fulfilled,(state, action) => {
         state.isLoading = false;
         state.product = action.payload;
       })
-      .addCase(fetchCameraAction.rejected,(state, action) => {
+      .addCase(fetchCameraAction.rejected,(state) => {
         state.isError = true;
       })
-      .addCase(fetchPostReviewAction.pending, (state, action) => {
+      .addCase(fetchPostReviewAction.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(fetchPostReviewAction.fulfilled, (state, action) => {
+      .addCase(fetchPostReviewAction.fulfilled, (state) => {
         state.isLoading = false;
         state.isModalReview = false;
         state.isModalSuccess = true;
       })
-      .addCase(fetchPostReviewAction.rejected, (state, action) => {
+      .addCase(fetchPostReviewAction.rejected, (state) => {
         state.isLoading = false;
         state.isError = true;
         state.isModalReview = false;

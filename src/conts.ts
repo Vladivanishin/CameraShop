@@ -5,6 +5,7 @@ export const COUNT_STARS_REVIEW = 5;
 
 export enum AppRoute {
   Catalog = '/catalog',
+  CatalogPage = '/catalog/:page',
   Product ='/product/:id',
   Basket = '/basket'
 }

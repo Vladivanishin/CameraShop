@@ -27,10 +27,6 @@ const store = mockStore({
     reviews: [makeFakeReview()],
   },
 });
-let isOpen = true;
-const onClose = () => {
-  isOpen = !isOpen;
-};
 
 describe('Component: ModalAddBasket', () => {
   it('should render correctly', () => {
@@ -38,7 +34,7 @@ describe('Component: ModalAddBasket', () => {
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <ModalAddBasket isOpen={isOpen} onClose={onClose}/>
+          <ModalAddBasket />
         </HistoryRouter>
       </Provider>
     );

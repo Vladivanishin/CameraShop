@@ -14,7 +14,7 @@ export default function ModalBuy() : JSX.Element{
 
   return(
     <Modal isOpen={isModalBuy} onClose={handleCloseBuyModal}>
-      <ModalAddBasket isOpen={isModalBuy} onClose={handleCloseBuyModal}/>
+      <ModalAddBasket />
     </Modal>
   );
 }

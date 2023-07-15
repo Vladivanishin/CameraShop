@@ -26,7 +26,7 @@ export default function Reviews() : JSX.Element{
           <ReviewsList reviews={currentReviews}/>
           <div
             className="review-block__buttons"
-            onClick={() => setCount((prev) => count + MAX_REVIEWS_COUNT)}
+            onClick={() => setCount(() => count + MAX_REVIEWS_COUNT)}
           >
             {reviews.length !== currentReviews.length && (
               <button className="btn btn--purple" type="button">Показать больше отзывов

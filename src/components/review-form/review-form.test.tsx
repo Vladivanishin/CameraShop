@@ -26,10 +26,6 @@ const store = mockStore({
     reviews: [makeFakeReview()],
   },
 });
-let isOpen = true;
-const onClose = () => {
-  isOpen = !isOpen;
-};
 
 describe('Component: Form', () => {
   it('should render correctly', () => {
@@ -37,7 +33,7 @@ describe('Component: Form', () => {
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <ReviewForm isOpen={isOpen} onClose={onClose}/>
+          <ReviewForm />
         </HistoryRouter>
       </Provider>
     );
