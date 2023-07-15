@@ -1,4 +1,4 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
 import { useAppDispatch, useAppSelector } from '../../hooks';
@@ -30,6 +30,15 @@ export default function ProductPage (): JSX.Element{
   const isModalReview = useAppSelector(getModalReviewStatus);
   const isModalSuccess = useAppSelector(getModalSuccess);
   const reviews = useAppSelector(getReviews);
+  const locationURL = useLocation();
+
+  useEffect(() => {
+    if (locationURL.search === '?specifications') {
+      dispatch(selectTabsControl(TabsControl.Specifications));
+    } else {
+      dispatch(selectTabsControl(TabsControl.Description));
+    }
+  }, [dispatch, locationURL.search]);
 
   useEffect(() => {
     handleScrollTopClick();
