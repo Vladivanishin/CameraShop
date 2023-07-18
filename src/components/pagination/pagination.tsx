@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import { Link, generatePath, useLocation } from 'react-router-dom';
-import { AppRoute } from '../../conts';
+import { Link, generatePath, useLocation, useSearchParams } from 'react-router-dom';
+import { AppRoute, DEFAULT_PAGINATION_PAGE } from '../../conts';
 
 type PaginationProps = {
   currentPage: number;
@@ -10,26 +10,22 @@ type PaginationProps = {
 
 export default function Pagination({ currentPage, pageCount, onPageChange }: PaginationProps): JSX.Element {
   const locationURL = useLocation();
-  const regex = /(\w+)=(.*)/;
-  const str = String(locationURL.search);
+  const [searchParams] = useSearchParams();
+  const pageNumber = Number(searchParams.get('page'));
 
   useEffect(() => {
-    const match = str.match(regex);
-    if (match) {
-      const urlPage = match[2];
-      if (locationURL.search === `?page=${urlPage}`) {
-        onPageChange(Number(urlPage));
-      }
-      if(Number(urlPage) > pageCount){
-        onPageChange(1);
-      }
+    if (locationURL.search === `?page=${pageNumber}`) {
+      onPageChange(pageNumber);
+    }
+    if(pageNumber > pageCount){
+      onPageChange(DEFAULT_PAGINATION_PAGE);
     }
   }, [locationURL.search]);
 
   return (
     <div className="pagination" data-testid="pagination">
       <ul className="pagination__list">
-        {currentPage !== 1 &&
+        {currentPage !== DEFAULT_PAGINATION_PAGE &&
           <li className="pagination__item">
             <Link className="pagination__link pagination__link--text"
               to={generatePath(AppRoute.CatalogPage, { page: `?page=${currentPage - 1}`})}

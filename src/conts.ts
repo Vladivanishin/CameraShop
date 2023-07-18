@@ -2,6 +2,7 @@ export const ITEMS_PER_PAGE = 9;
 export const MAX_REVIEWS_COUNT = 3;
 export const MIN_LENGTH_COMMENT = 5;
 export const COUNT_STARS_REVIEW = 5;
+export const DEFAULT_PAGINATION_PAGE = 1;
 
 export enum AppRoute {
   Catalog = '/catalog',
