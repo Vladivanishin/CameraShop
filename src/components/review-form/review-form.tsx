@@ -1,68 +1,37 @@
-import { FormEvent, Fragment, useRef, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getModalReviewStatus, getSelectedProduct } from '../../store/catalog-process/selectors';
-import { fetchPostReviewAction } from '../../store/api-actions';
+import { useState } from 'react';
 import { ReviewRequest } from '../../types/catalog';
-import LoadingPage from '../../pages/loading-page/loading-page';
+import { useForm } from 'react-hook-form';
+import { fetchPostReviewAction } from '../../store/api-actions';
+import clsx from 'clsx';
 import { modalReview } from '../../store/catalog-process/catalog-process';
-import { COUNT_STARS_REVIEW, MIN_LENGTH_COMMENT } from '../../conts';
+import { getModalReviewStatus } from '../../store/catalog-process/selectors';
 
-export default function ReviewForm () : JSX.Element{
-  const userNameRef = useRef<HTMLInputElement | null>(null);
-  const advantageRef = useRef<HTMLInputElement | null>(null);
-  const disadvantageRef = useRef<HTMLInputElement | null>(null);
-  const reviewRef = useRef<HTMLTextAreaElement | null>(null);
+export default function ReviewForm(): JSX.Element{
   const dispatch = useAppDispatch();
-  const currentProduct = useAppSelector(getSelectedProduct);
   const isModalReview = useAppSelector(getModalReviewStatus);
+  const id = useParams().id;
+  const [rate, setRate] = useState(0);
 
-  const [rating, setRating] = useState(0);
+  const { register, handleSubmit, formState: { errors }
+  } = useForm<ReviewRequest>({
+    mode: 'onSubmit'
+  });
 
-  const handleRatingChange = (newRating : number) => {
-    setRating(newRating);
+  const onSubmit = async (data: ReviewRequest) => {
+    const cameraId = Number(id);
+    const rating = Number(data.rating);
+    await dispatch(fetchPostReviewAction({...data, rating, cameraId}));
   };
 
-  if(!currentProduct){
-    return <LoadingPage />;
-  }
-
-  const onSubmit = (review: ReviewRequest) => {
-    dispatch(fetchPostReviewAction(review));
-  };
-
-  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
-    evt.preventDefault();
-    if (userNameRef.current !== null && advantageRef.current !== null && disadvantageRef.current !== null && reviewRef.current !== null) {
-      onSubmit({
-        userName: userNameRef.current.value,
-        advantage: advantageRef.current.value,
-        disadvantage: disadvantageRef.current.value,
-        review: reviewRef.current.value,
-        rating: rating,
-        cameraId: currentProduct.id,
-      });
-    }
-  };
-
-  const handleCloseReviewModal = () => {
-    dispatch(modalReview(!isModalReview));
-  };
-
-  const ratingProduct: Record<number, string> = {
-    5: 'Отлично',
-    4: 'Хорошо',
-    3: 'Нормально',
-    2: 'Плохо',
-    1: 'Ужасно'
-  };
-
-  return(
+  return (
     <>
       <p className="title title--h4">Оставить отзыв</p>
       <div className="form-review">
-        <form method="post" onSubmit={handleSubmit}>
+        <form method="post" onSubmit={(evt) => void handleSubmit(onSubmit)(evt)}>
           <div className="form-review__rate">
-            <fieldset className={`rate form-review__item ${rating === 0 ? 'is-invalid' : ''}`}>
+            <fieldset className={clsx('rate form-review__item', errors.rating && 'is-invalid')}>
               <legend className="rate__caption">Рейтинг
                 <svg width="9" height="9" aria-hidden="true">
                   <use xlinkHref="#icon-snowflake"></use>
@@ -70,31 +39,54 @@ export default function ReviewForm () : JSX.Element{
               </legend>
               <div className="rate__bar">
                 <div className="rate__group">
-                  {Array.from({length : COUNT_STARS_REVIEW}).map((_, index) => (
-                    <Fragment key={(index + 1).toString()}>
-                      <input
-                        className="visually-hidden"
-                        id={`star-${COUNT_STARS_REVIEW - index}`}
-                        name="rate"
-                        type="radio"
-                        value={COUNT_STARS_REVIEW - index}
-                        onClick={() => handleRatingChange(COUNT_STARS_REVIEW - index)}
-                      />
-                      <label
-                        className='rate__label'
-                        htmlFor={`star-${COUNT_STARS_REVIEW - index}`}
-                        title={`Оценка ${ratingProduct[COUNT_STARS_REVIEW - index]}`}
-                      >
-                      </label>
-                    </Fragment>
-                  ))}
+                  <input
+                    onClick={() => setRate(5)}
+                    className="visually-hidden"
+                    id="star-5" type="radio" value="5"
+                    {...register('rating', {required: true})}
+                  />
+                  <label className="rate__label" htmlFor="star-5" title="Отлично"></label>
+                  <input
+                    onClick={() => setRate(4)}
+                    className="visually-hidden"
+                    id="star-4" type="radio" value="4"
+                    {...register('rating', {required: true})}
+                  />
+                  <label className="rate__label" htmlFor="star-4" title="Хорошо"></label>
+                  <input
+                    onClick={() => setRate(3)}
+                    className="visually-hidden"
+                    id="star-3" type="radio"
+                    value="3"
+                    {...register('rating', {required: true})}
+                  />
+                  <label className="rate__label" htmlFor="star-3" title="Нормально"></label>
+                  <input
+                    onClick={() => setRate(2)}
+                    className="visually-hidden"
+                    id="star-2" type="radio"
+                    value="2"
+                    {...register('rating', {required: true})}
+                  />
+                  <label className="rate__label" htmlFor="star-2" title="Плохо"></label>
+                  <input
+                    onClick={() => setRate(1)}
+                    className="visually-hidden"
+                    id="star-1" type="radio"
+                    value="1"
+                    {...register('rating', {required: true})}
+                  />
+                  <label className="rate__label" htmlFor="star-1" title="Ужасно"></label>
                 </div>
-                <div className="rate__progress"><span className="rate__stars">{rating}</span> <span>/</span> <span className="rate__all-stars">5</span>
+                <div className="rate__progress">
+                  <span className="rate__stars">{rate}</span>
+                  <span>/</span>
+                  <span className="rate__all-stars">5</span>
                 </div>
               </div>
               <p className="rate__message">Нужно оценить товар</p>
             </fieldset>
-            <div className={'custom-input form-review__item'}>
+            <div className={clsx('custom-input form-review__item', errors.userName && 'is-invalid')}>
               <label>
                 <span className="custom-input__label">Ваше имя
                   <svg width="9" height="9" aria-hidden="true">
@@ -103,15 +95,13 @@ export default function ReviewForm () : JSX.Element{
                 </span>
                 <input
                   type="text"
-                  name="userName"
-                  ref={userNameRef}
                   placeholder="Введите ваше имя"
-                  required
+                  {...register('userName', {required: true})}
                 />
               </label>
-              <p className="custom-input__error">Нужно указать имя</p>
+              {errors.userName && <p className="custom-input__error">Нужно указать имя</p>}
             </div>
-            <div className="custom-input form-review__item">
+            <div className={clsx('custom-input form-review__item', errors.advantage && 'is-invalid')}>
               <label>
                 <span className="custom-input__label">Достоинства
                   <svg width="9" height="9" aria-hidden="true">
@@ -120,31 +110,28 @@ export default function ReviewForm () : JSX.Element{
                 </span>
                 <input
                   type="text"
-                  name="user-plus"
-                  ref={advantageRef}
                   placeholder="Основные преимущества товара"
-                  required
+                  {...register('advantage', {required: true})}
                 />
               </label>
-              <p className="custom-input__error">Нужно указать достоинства</p>
+              {errors.advantage && <p className="custom-input__error">Нужно указать достоинства</p>}
             </div>
-            <div className="custom-input form-review__item">
+            <div className={clsx('custom-input form-review__item', errors.disadvantage && 'is-invalid')}>
               <label>
                 <span className="custom-input__label">Недостатки
                   <svg width="9" height="9" aria-hidden="true">
                     <use xlinkHref="#icon-snowflake"></use>
                   </svg>
                 </span>
-                <input type="text"
-                  name="user-minus"
-                  ref={disadvantageRef}
+                <input
+                  type="text"
                   placeholder="Главные недостатки товара"
-                  required
+                  {...register('disadvantage', {required: true})}
                 />
               </label>
-              <p className="custom-input__error">Нужно указать недостатки</p>
+              {errors.disadvantage && <p className="custom-input__error">Нужно указать недостатки</p>}
             </div>
-            <div className="custom-textarea form-review__item">
+            <div className={clsx('custom-textarea form-review__item', errors.review && 'is-invalid')}>
               <label>
                 <span className="custom-textarea__label">Комментарий
                   <svg width="9" height="9" aria-hidden="true">
@@ -152,20 +139,22 @@ export default function ReviewForm () : JSX.Element{
                   </svg>
                 </span>
                 <textarea
-                  name="user-comment"
-                  minLength={MIN_LENGTH_COMMENT}
-                  ref={reviewRef}
+                  minLength={5}
                   placeholder="Поделитесь своим опытом покупки"
+                  {...register('review', {required: 'Нужно добавить комментарий', minLength: {
+                    value: 5,
+                    message: 'Минимальная длинна 5 символов'
+                  }})}
                 >
                 </textarea>
               </label>
-              <div className="custom-textarea__error">Нужно добавить комментарий</div>
+              {errors.review && <div className="custom-textarea__error">{errors.review.message}</div>}
             </div>
           </div>
           <button className="btn btn--purple form-review__btn" type="submit">Отправить отзыв</button>
         </form>
       </div>
-      <button className="cross-btn" type="button" aria-label="Закрыть попап" onClick={() => handleCloseReviewModal()}>
+      <button className="cross-btn" type="button" aria-label="Закрыть попап" onClick={() => dispatch(modalReview(!isModalReview))}>
         <svg width="10" height="10" aria-hidden="true">
           <use xlinkHref="#icon-close"></use>
         </svg>

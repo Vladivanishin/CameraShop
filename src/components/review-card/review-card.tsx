@@ -6,10 +6,10 @@ type ReviewCardProps = {
 }
 
 export default function ReviewCard({review}: ReviewCardProps): JSX.Element{
+  require('dayjs/locale/ru');
   const date = review.createAt;
-  const formatUserDate = dayjs(date).format('DD MMMM');
+  const formatUserDate = dayjs(date).locale('ru').format('DD MMMM');
   const formatDateTime = dayjs(date).format('YYYY-MM-DD');
-
   return(
     <li className="review-card" data-testid='review-card'>
       <div className="review-card__head">
