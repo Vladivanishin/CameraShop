@@ -55,7 +55,6 @@
         ],
         "rules": {
           "@typescript-eslint/unbound-method": "off",
-          "@typescript-eslint/no-misused-promises": "error",
           "jest/unbound-method": "error"
         }
       }
