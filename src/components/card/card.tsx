@@ -1,10 +1,11 @@
 import { Link, generatePath } from 'react-router-dom';
-import { Camera } from '../../types/catalog';
+import { Camera, Review } from '../../types/catalog';
 import { AppRoute } from '../../conts';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { modalBuy, selectProduct } from '../../store/catalog-process/catalog-process';
 import { getModalBuyStatus } from '../../store/catalog-process/selectors';
-import { formatPrice } from '../../utils';
+import { formatPrice, getRating } from '../../utils';
+import LoadingPage from '../../pages/loading-page/loading-page';
 
 type CardProps = {
   camera: Camera;
@@ -13,6 +14,12 @@ type CardProps = {
 export default function Card ({camera}: CardProps) : JSX.Element {
   const dispatch = useAppDispatch();
   const isActive = useAppSelector(getModalBuyStatus);
+
+  if(camera.reviews === undefined){
+    return <LoadingPage></LoadingPage>;
+  }
+  const rating = getRating(camera.reviews as Review[]);
+
   const handleBuyClick = () => {
     dispatch(selectProduct(camera));
     dispatch(modalBuy(!isActive));
@@ -31,21 +38,21 @@ export default function Card ({camera}: CardProps) : JSX.Element {
       <div className="product-card__info">
         <div className="rate product-card__rate">
           <svg width="17" height="16" aria-hidden="true">
-            <use xlinkHref="#icon-full-star"></use>
+            <use xlinkHref={`${rating !== 0 ? '#icon-full-star' : '#icon-star'}`}></use>
           </svg>
           <svg width="17" height="16" aria-hidden="true">
-            <use xlinkHref="#icon-full-star"></use>
+            <use xlinkHref={`${rating === 2 || rating === 3 || rating === 4 || rating === 5 ? '#icon-full-star' : '#icon-star'}`}></use>
           </svg>
           <svg width="17" height="16" aria-hidden="true">
-            <use xlinkHref="#icon-full-star"></use>
+            <use xlinkHref={`${rating === 3 || rating === 4 || rating === 5 ? '#icon-full-star' : '#icon-star'}`}></use>
           </svg>
           <svg width="17" height="16" aria-hidden="true">
-            <use xlinkHref="#icon-star"></use>
+            <use xlinkHref={`${rating === 4 || rating === 5 ? '#icon-full-star' : '#icon-star'}`}></use>
           </svg>
           <svg width="17" height="16" aria-hidden="true">
-            <use xlinkHref="#icon-star"></use>
+            <use xlinkHref={`${rating === 5 ? '#icon-full-star' : '#icon-star'}`}></use>
           </svg>
-          <p className="visually-hidden">Рейтинг: 3</p>
+          <p className="visually-hidden">Рейтинг: {rating}</p>
           <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>{camera.reviewCount}</p>
         </div>
         <p className="product-card__title">{camera.name}</p>

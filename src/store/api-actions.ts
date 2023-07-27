@@ -13,12 +13,12 @@ type ThunkConfig = {
 };
 
 export const fetchCamerasAction = createAsyncThunk<
-  Cameras,
-  undefined,
-  ThunkConfig
->('fetchCamerasAction', async (_arg, { extra: api }) => {
+Cameras,
+undefined,
+ThunkConfig
+>('fetchCamerasAction', async (_, { extra: api }) => {
   try {
-    const { data: cameras } = await api.get<Cameras>(APIRoute.Cameras);
+    const { data: cameras } = await api.get<Cameras>(APIRoute.Cameras, { params: { _embed: 'reviews' } });
     return cameras;
   } catch (error) {
     notify('Список товаров не получен!');
@@ -47,8 +47,8 @@ number,
 ThunkConfig
 >('fetchSimilarAction', async (cameraId, { extra: api}) => {
   try {
-    const {data: camera} = await api.get<Cameras>(`${APIRoute.Cameras}/${cameraId}/similar`);
-    return camera;
+    const {data: cameras} = await api.get<Cameras>(`${APIRoute.Cameras}/${cameraId}/similar`);
+    return cameras;
   } catch (error){
     notify('Список похожих товаров не получен!');
     throw error;

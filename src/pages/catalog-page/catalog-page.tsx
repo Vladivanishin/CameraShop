@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getLoadingStatus, getModalBuyStatus, getPromo } from '../../store/catalog-process/selectors';
+import { getCameras, getLoadingStatus, getModalBuyStatus, getPromo } from '../../store/catalog-process/selectors';
 import { fetchCameraAction, fetchCamerasAction, fetchPromoAction } from '../../store/api-actions';
 import LoadingPage from '../loading-page/loading-page';
 import { Link, generatePath } from 'react-router-dom';
@@ -17,9 +17,12 @@ export default function CatalogPage () : JSX.Element{
   const isLoading = useAppSelector(getLoadingStatus);
   const promo = useAppSelector(getPromo);
   const isModalActive = useAppSelector(getModalBuyStatus);
+  const cameras = useAppSelector(getCameras);
 
   useEffect(() => {
-    dispatch(fetchCamerasAction());
+    if(cameras.length === 0){
+      dispatch(fetchCamerasAction());
+    }
     dispatch(fetchPromoAction());
   },[dispatch]);
 
@@ -27,7 +30,7 @@ export default function CatalogPage () : JSX.Element{
     return <LoadingPage />;
   }
 
-  if(!promo){
+  if(!promo || cameras.length === 0){
     return <LoadingPage />;
   }
 

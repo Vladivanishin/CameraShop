@@ -2,15 +2,15 @@ import { Link, useLocation, useParams } from 'react-router-dom';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getModalBuyStatus, getModalReviewStatus, getModalSuccess, getSelectedProduct } from '../../store/catalog-process/selectors';
+import { getCameras, getModalBuyStatus, getModalReviewStatus, getModalSuccess, getSelectedProduct } from '../../store/catalog-process/selectors';
 import LoadingPage from '../loading-page/loading-page';
 import { AppRoute, TabsControl } from '../../conts';
 import Similar from '../../components/similar/similar';
 import { getCurrentTabControl, getReviews, getSimilarCameras } from '../../store/product-process/selectors';
-import { fetchCameraAction, fetchReviewsAction, fetchSimilarAction } from '../../store/api-actions';
+import { fetchCameraAction, fetchCamerasAction, fetchReviewsAction, fetchSimilarAction } from '../../store/api-actions';
 import { useEffect } from 'react';
 import { selectTabsControl } from '../../store/product-process/product-process';
-import { formatPrice, handleScrollTopClick } from '../../utils';
+import { formatPrice, getRating, handleScrollTopClick } from '../../utils';
 import { modalBuy, selectProduct } from '../../store/catalog-process/catalog-process';
 import Reviews from '../../components/reviews/reviews';
 import ModalSuccess from '../../components/modal-success/modal-success';
@@ -31,6 +31,8 @@ export default function ProductPage (): JSX.Element{
   const isModalSuccess = useAppSelector(getModalSuccess);
   const reviews = useAppSelector(getReviews);
   const locationURL = useLocation();
+  const rating = getRating(reviews);
+  const cameras = useAppSelector(getCameras);
 
   useEffect(() => {
     if (locationURL.search === '?specifications') {
@@ -48,11 +50,16 @@ export default function ProductPage (): JSX.Element{
     dispatch(fetchSimilarAction(cameraId));
     dispatch(fetchCameraAction(cameraId));
     dispatch(fetchReviewsAction(cameraId));
+    if(cameras.length === 0){
+      dispatch(fetchCamerasAction());
+    }
   },[cameraId, dispatch]);
 
-  if(!selectedProduct){
+  if(!selectedProduct || similarCameras.length === 0){
     return <LoadingPage />;
   }
+
+  const sliderCameras = cameras.filter((camera) => similarCameras.some((otherCamera) => camera.id === otherCamera.id));
 
   const handleBuyClick = () => {
     dispatch(selectProduct(selectedProduct));
@@ -104,21 +111,21 @@ export default function ProductPage (): JSX.Element{
                   <h1 className="title title--h3">{selectedProduct.name}</h1>
                   <div className="rate product__rate">
                     <svg width="17" height="16" aria-hidden="true">
-                      <use xlinkHref="#icon-full-star"></use>
+                      <use xlinkHref={`${rating !== 0 ? '#icon-full-star' : '#icon-star'}`}></use>
                     </svg>
                     <svg width="17" height="16" aria-hidden="true">
-                      <use xlinkHref="#icon-full-star"></use>
+                      <use xlinkHref={`${rating === 2 || rating === 3 || rating === 4 || rating === 5 ? '#icon-full-star' : '#icon-star'}`}></use>
                     </svg>
                     <svg width="17" height="16" aria-hidden="true">
-                      <use xlinkHref="#icon-full-star"></use>
+                      <use xlinkHref={`${rating === 3 || rating === 4 || rating === 5 ? '#icon-full-star' : '#icon-star'}`}></use>
                     </svg>
                     <svg width="17" height="16" aria-hidden="true">
-                      <use xlinkHref="#icon-full-star"></use>
+                      <use xlinkHref={`${rating === 4 || rating === 5 ? '#icon-full-star' : '#icon-star'}`}></use>
                     </svg>
                     <svg width="17" height="16" aria-hidden="true">
-                      <use xlinkHref="#icon-star"></use>
+                      <use xlinkHref={`${rating === 5 ? '#icon-full-star' : '#icon-star'}`}></use>
                     </svg>
-                    <p className="visually-hidden">Рейтинг: 4</p>
+                    <p className="visually-hidden">Рейтинг: {rating}</p>
                     <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>{selectedProduct.reviewCount}</p>
                   </div>
                   <p className="product__price"><span className="visually-hidden">Цена:</span>{formatPrice(selectedProduct.price)} ₽</p>
@@ -170,7 +177,7 @@ export default function ProductPage (): JSX.Element{
               </div>
             </section>
           </div>
-          { similarCameras.length && <Similar cameras={similarCameras}/>}
+          { similarCameras.length && <Similar cameras={sliderCameras}/>}
           { reviews.length && <Reviews />}
         </div>
       </main>
