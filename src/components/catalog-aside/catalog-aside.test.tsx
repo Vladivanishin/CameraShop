@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import HistoryRouter from '../history-route/history-route';
 import { NameSpace } from '../../conts';
 import { makeFakeCamera, makeFakePromo } from '../../mocks';
-import Card from './card';
+import CatalogAside from './catalog-aside';
 
 const mockStore = configureMockStore();
 const camera = makeFakeCamera();
@@ -20,21 +20,27 @@ const store = mockStore({
     isModalBuy: false,
     isModalReview: false,
     isModalSuccess: false,
+    sortType: null,
+    sortOrder: null,
+  },
+  [NameSpace.Filters]: {
+    category: null,
+    types: [],
+    levels: [],
+    minPrice: 0,
+    maxPrice: 0,
   }
 });
 
-describe('Component: Card', () => {
+describe('Component: CatalogAside', () => {
   it('should render correctly', () => {
-
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <Card camera={camera} />
+          <CatalogAside />
         </HistoryRouter>
       </Provider>
     );
-
-    expect(screen.getByTestId('card')).toBeInTheDocument();
+    expect(screen.getByTestId('catalog-aside')).toBeInTheDocument();
   });
-
 });

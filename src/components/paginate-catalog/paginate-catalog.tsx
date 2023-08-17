@@ -1,12 +1,14 @@
 import { SetStateAction, useState } from 'react';
 import Pagination from '../pagination/pagination';
-import { useAppSelector } from '../../hooks';
-import { getCameras } from '../../store/catalog-process/selectors';
 import Catalog from '../catalog/catalog';
 import { ITEMS_PER_PAGE } from '../../conts';
+import { Cameras } from '../../types/catalog';
 
-export const PaginateCatalog = () => {
-  const cameras = useAppSelector(getCameras);
+type PaginateCatalogProps = {
+  cameras: Cameras;
+}
+
+export const PaginateCatalog = ({cameras}: PaginateCatalogProps) => {
   const [currentPage, setCurrentPage] = useState(0);
 
   if (!currentPage) {

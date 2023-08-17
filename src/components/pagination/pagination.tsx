@@ -38,7 +38,9 @@ export default function Pagination({ currentPage, pageCount, onPageChange }: Pag
             <Link
               className={`pagination__link ${page === currentPage ? 'pagination__link--active' : ''}`}
               to={generatePath(AppRoute.CatalogPage, { page: `?page=${page}`})}
-              onClick={() => onPageChange(page)}
+              onClick={() => {
+                onPageChange(page);
+              }}
             >
               {page}
             </Link>

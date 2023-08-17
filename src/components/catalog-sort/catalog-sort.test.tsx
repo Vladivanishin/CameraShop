@@ -1,11 +1,11 @@
 import { render, screen } from '@testing-library/react';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { createMemoryHistory } from 'history';
-import { Provider } from 'react-redux';
 import HistoryRouter from '../history-route/history-route';
 import { NameSpace } from '../../conts';
 import { makeFakeCamera, makeFakePromo } from '../../mocks';
-import Card from './card';
+import CatalogSort from './catalog-sort';
+import { Provider } from 'react-redux';
 
 const mockStore = configureMockStore();
 const camera = makeFakeCamera();
@@ -23,18 +23,15 @@ const store = mockStore({
   }
 });
 
-describe('Component: Card', () => {
+describe('Component: CatalogSort', () => {
   it('should render correctly', () => {
-
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <Card camera={camera} />
+          <CatalogSort cameras={[camera]}/>
         </HistoryRouter>
       </Provider>
     );
-
-    expect(screen.getByTestId('card')).toBeInTheDocument();
+    expect(screen.getByTestId('catalog-sort')).toBeInTheDocument();
   });
-
 });

@@ -44,6 +44,13 @@ const store = mockStore({
     currentTabControl: TabsControl.Description,
     reviews: reviews,
   },
+  [NameSpace.Filters]: {
+    category: null,
+    types: [],
+    levels: [],
+    minPrice: 0,
+    maxPrice: 0,
+  }
 });
 
 const fakeApp = (

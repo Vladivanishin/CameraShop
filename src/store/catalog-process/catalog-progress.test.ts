@@ -19,6 +19,11 @@ describe('Reducer: catalogProcess', () => {
       isModalBuy: false,
       isModalReview: false,
       isModalSuccess: false,
+      sortType: null,
+      sortOrder: null,
+      currentPage: null,
+      currentCameras: [],
+      camerasWithRating: [],
     };
   });
   it('Should return initial state without additional parameters', () => {

@@ -1,4 +1,4 @@
-import { NameSpace } from '../../conts';
+import { NameSpace, SortOrder, SortType } from '../../conts';
 import { Camera, Cameras, Promo } from '../../types/catalog';
 import { State } from '../../types/state';
 
@@ -22,3 +22,18 @@ export const getModalReviewStatus = (state: State) : boolean =>
 
 export const getModalSuccess = (state: State) : boolean =>
   state[NameSpace.Catalog].isModalSuccess;
+
+export const getSelectedSortType = (state: State) : SortType | null =>
+  state[NameSpace.Catalog].sortType;
+
+export const getSelectedSortOrder = (state: State) : SortOrder | null =>
+  state[NameSpace.Catalog].sortOrder;
+
+export const getCurrentPage = (state: State) : number | null =>
+  state[NameSpace.Catalog].currentPage;
+
+export const getCurrentCameras = (state: State): Cameras =>
+  state[NameSpace.Catalog].currentCameras;
+
+export const getCamerasWithRating = (state: State): Cameras =>
+  state[NameSpace.Catalog].camerasWithRating;

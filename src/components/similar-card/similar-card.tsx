@@ -1,11 +1,10 @@
 import { Link, generatePath } from 'react-router-dom';
 import { Camera, Review } from '../../types/catalog';
-import { AppRoute } from '../../conts';
+import { AppRoute, NONE_RATING } from '../../conts';
 import { modalBuy, selectProduct } from '../../store/catalog-process/catalog-process';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getModalBuyStatus } from '../../store/catalog-process/selectors';
 import { formatPrice, getRating, handleScrollTopClick } from '../../utils';
-import LoadingPage from '../../pages/loading-page/loading-page';
 
 type SimilarCardProps = {
   camera : Camera;
@@ -15,10 +14,7 @@ export default function SimilarCard({camera}: SimilarCardProps) : JSX.Element{
   const dispatch = useAppDispatch();
   const isActive = useAppSelector(getModalBuyStatus);
 
-  if(camera.reviews === undefined){
-    return <LoadingPage></LoadingPage>;
-  }
-  const rating = getRating(camera.reviews as Review[]);
+  const rating = camera.reviews ? getRating(camera.reviews as Review[]) : NONE_RATING;
 
   const handleBuyClick = () => {
     dispatch(selectProduct(camera));
@@ -39,7 +35,7 @@ export default function SimilarCard({camera}: SimilarCardProps) : JSX.Element{
       <div className="product-card__info" data-testid="similar-card">
         <div className="rate product-card__rate">
           <svg width="17" height="16" aria-hidden="true">
-            <use xlinkHref={`${rating !== 0 ? '#icon-full-star' : '#icon-star'}`}></use>
+            <use xlinkHref={`${rating !== NONE_RATING ? '#icon-full-star' : '#icon-star'}`}></use>
           </svg>
           <svg width="17" height="16" aria-hidden="true">
             <use xlinkHref={`${rating === 2 || rating === 3 || rating === 4 || rating === 5 ? '#icon-full-star' : '#icon-star'}`}></use>

@@ -1,11 +1,11 @@
+import { Provider } from 'react-redux';
 import { render, screen } from '@testing-library/react';
 import { configureMockStore } from '@jedmao/redux-mock-store';
-import { createMemoryHistory } from 'history';
-import { Provider } from 'react-redux';
-import HistoryRouter from '../history-route/history-route';
-import { NameSpace } from '../../conts';
 import { makeFakeCamera, makeFakePromo } from '../../mocks';
-import Card from './card';
+import { NameSpace } from '../../conts';
+import { createMemoryHistory } from 'history';
+import HistoryRouter from '../history-route/history-route';
+import SearchBar from './search-bar';
 
 const mockStore = configureMockStore();
 const camera = makeFakeCamera();
@@ -20,21 +20,29 @@ const store = mockStore({
     isModalBuy: false,
     isModalReview: false,
     isModalSuccess: false,
+    sortType: null,
+    sortOrder: null,
+  },
+  [NameSpace.Filters]: {
+    category: null,
+    types: [],
+    levels: [],
+    minPrice: 0,
+    maxPrice: 0,
   }
+
 });
 
-describe('Component: Card', () => {
+describe('Component: SearchBar', () => {
   it('should render correctly', () => {
 
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <Card camera={camera} />
+          <SearchBar />
         </HistoryRouter>
       </Provider>
     );
-
-    expect(screen.getByTestId('card')).toBeInTheDocument();
+    expect(screen.getByTestId('search-bar')).toBeInTheDocument();
   });
-
 });

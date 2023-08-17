@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { NameSpace } from '../../conts';
+import { NameSpace, SortOrder, SortType } from '../../conts';
 import { Camera, Cameras, Promo } from '../../types/catalog';
 import { fetchCameraAction, fetchCamerasAction, fetchPostReviewAction, fetchPromoAction } from '../api-actions';
 
@@ -12,6 +12,11 @@ export type CatalogProcess = {
   isModalBuy: boolean;
   isModalReview: boolean;
   isModalSuccess: boolean;
+  sortType: SortType | null;
+  sortOrder: SortOrder | null;
+  currentPage: number | null;
+  currentCameras: Cameras;
+  camerasWithRating: Cameras;
 }
 
 const initialState: CatalogProcess = {
@@ -23,6 +28,11 @@ const initialState: CatalogProcess = {
   isModalBuy: false,
   isModalReview: false,
   isModalSuccess: false,
+  sortType: null,
+  sortOrder: null,
+  currentPage: null,
+  currentCameras: [],
+  camerasWithRating: [],
 };
 
 export const catalogProcess = createSlice({
@@ -40,6 +50,21 @@ export const catalogProcess = createSlice({
     },
     modalSuccess: (state, action: PayloadAction<boolean>) => {
       state.isModalSuccess = action.payload;
+    },
+    selectSortType: (state, action: PayloadAction<SortType | null>) => {
+      state.sortType = action.payload;
+    },
+    selectSortOrder: (state, action: PayloadAction<SortOrder | null>) => {
+      state.sortOrder = action.payload;
+    },
+    setCurrentPage: (state, action: PayloadAction<number | null>) => {
+      state.currentPage = action.payload;
+    },
+    setCurrentCameras: (state, action: PayloadAction<Cameras>) => {
+      state.currentCameras = action.payload;
+    },
+    setCamerasWithRating: (state, action: PayloadAction<Cameras>) => {
+      state.camerasWithRating = action.payload;
     },
   },
   extraReducers(builder) {
@@ -91,4 +116,4 @@ export const catalogProcess = createSlice({
   },
 });
 
-export const {selectProduct, modalBuy, modalReview, modalSuccess} = catalogProcess.actions;
+export const {selectProduct, modalBuy, modalReview, modalSuccess, selectSortType, selectSortOrder, setCurrentPage ,setCurrentCameras, setCamerasWithRating} = catalogProcess.actions;

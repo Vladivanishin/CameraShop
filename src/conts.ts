@@ -3,6 +3,8 @@ export const MAX_REVIEWS_COUNT = 3;
 export const MIN_LENGTH_COMMENT = 5;
 export const COUNT_STARS_REVIEW = 5;
 export const DEFAULT_PAGINATION_PAGE = 1;
+export const SEARCH_BAR_COUNT_CAMERAS = 4;
+export const NONE_RATING = 0;
 
 export enum AppRoute {
   Catalog = '/catalog',
@@ -23,18 +25,23 @@ export enum NameSpace {
   Catalog = 'CATALOG',
   Product = 'PRODUCT',
   Basket = 'BASKET',
+  Filters = 'FILTERS',
 }
 
 export enum CameraType {
-  Collection = 'Коллекционная',
-  Momental = 'Моментальная',
   Digital = 'Цифровая',
-  OldFilm = 'Плёночная'
+  OldFilm = 'Плёночная',
+  Momental = 'Моментальная',
+  Collection = 'Коллекционная',
 }
 
 export enum CameraCategory {
-  Video = 'Видеокамера',
   Photo = 'Фотоаппарат',
+  Video = 'Видеокамера',
+}
+
+export enum CameraApparat {
+  Apparat = 'Фотоаппарат',
 }
 
 export enum CameraLevel {
@@ -47,3 +54,25 @@ export enum TabsControl {
   Specifications = 'Характеристики',
   Description = 'Описание',
 }
+
+export enum KeyCode {
+  Enter = 'Enter',
+  ArrowUp = 'ArrowUp',
+  ArrowDown = 'ArrowDown',
+  Esc = 'Escape',
+}
+
+export enum SortType {
+  Price = 'по цене',
+  Popular = 'по популярности',
+}
+
+export enum SortOrder {
+  UP = 'По возрастанию',
+  Down = 'По убыванию',
+}
+
+export const sortOrderQueryValue = {
+  [SortOrder.UP]: 'asc',
+  [SortOrder.Down]: 'desc'
+};

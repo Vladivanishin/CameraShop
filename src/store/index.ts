@@ -4,12 +4,14 @@ import { redirect } from './middlewares/redirect';
 import { NameSpace } from '../conts';
 import { catalogProcess } from './catalog-process/catalog-process';
 import { productProcess } from './product-process/product-process';
+import { filtersProcess } from './filters-process/filters-process';
 
 const api = createAPI();
 
 export const rootReducer = combineReducers({
   [NameSpace.Catalog]: catalogProcess.reducer,
   [NameSpace.Product]: productProcess.reducer,
+  [NameSpace.Filters]: filtersProcess.reducer,
 });
 
 export const store = configureStore({

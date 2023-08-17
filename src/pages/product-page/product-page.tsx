@@ -4,7 +4,7 @@ import Header from '../../components/header/header';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getCameras, getModalBuyStatus, getModalReviewStatus, getModalSuccess, getSelectedProduct } from '../../store/catalog-process/selectors';
 import LoadingPage from '../loading-page/loading-page';
-import { AppRoute, TabsControl } from '../../conts';
+import { AppRoute, NONE_RATING, TabsControl } from '../../conts';
 import Similar from '../../components/similar/similar';
 import { getCurrentTabControl, getReviews, getSimilarCameras } from '../../store/product-process/selectors';
 import { fetchCameraAction, fetchCamerasAction, fetchReviewsAction, fetchSimilarAction } from '../../store/api-actions';
@@ -111,7 +111,7 @@ export default function ProductPage (): JSX.Element{
                   <h1 className="title title--h3">{selectedProduct.name}</h1>
                   <div className="rate product__rate">
                     <svg width="17" height="16" aria-hidden="true">
-                      <use xlinkHref={`${rating !== 0 ? '#icon-full-star' : '#icon-star'}`}></use>
+                      <use xlinkHref={`${rating !== NONE_RATING ? '#icon-full-star' : '#icon-star'}`}></use>
                     </svg>
                     <svg width="17" height="16" aria-hidden="true">
                       <use xlinkHref={`${rating === 2 || rating === 3 || rating === 4 || rating === 5 ? '#icon-full-star' : '#icon-star'}`}></use>

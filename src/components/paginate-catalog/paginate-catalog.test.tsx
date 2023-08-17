@@ -34,7 +34,7 @@ describe('Component: paginateCatalog', () => {
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <PaginateCatalog />
+          <PaginateCatalog cameras={[makeFakeCamera()]}/>
         </HistoryRouter>
       </Provider>
     );
