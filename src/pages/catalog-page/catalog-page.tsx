@@ -2,13 +2,13 @@ import { useEffect, useMemo } from 'react';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getCameras, getLoadingStatus, getModalBuyStatus, getPromo, getSelectedSortOrder, getSelectedSortType } from '../../store/catalog-process/selectors';
+import { getCameras, getCurrentPage, getLoadingStatus, getModalBuyStatus, getPromo, getSelectedSortOrder, getSelectedSortType } from '../../store/catalog-process/selectors';
 import { fetchCameraAction, fetchCamerasAction, fetchPromoAction } from '../../store/api-actions';
 import LoadingPage from '../loading-page/loading-page';
 import { Link, generatePath, useSearchParams } from 'react-router-dom';
-import { AppRoute, CameraCategory, CameraLevel, CameraType, SortOrder, SortType, sortOrderQueryValue } from '../../conts';
+import { AppRoute, CameraCategory, CameraLevel, CameraType, DEFAULT_PAGINATION_PAGE, SortOrder, SortType, sortOrderQueryValue } from '../../conts';
 import ModalBuy from '../../components/modal-buy/modal-buy';
-import { selectSortOrder, selectSortType } from '../../store/catalog-process/catalog-process';
+import { selectSortOrder, selectSortType, setCurrentPage } from '../../store/catalog-process/catalog-process';
 import { getCurrentCategory, getCurrentLevels, getCurrentMaxPrice, getCurrentMinPrice, getCurrentTypes } from '../../store/filters-process/selectors';
 import { changeCategory, changeLevel, changeType, setMaxPrice, setMinPrice } from '../../store/filters-process/filters-process';
 import { QueryParam } from '../../types/query-param';
@@ -31,6 +31,7 @@ export default function CatalogPage () : JSX.Element{
   const currentLevels = useAppSelector(getCurrentLevels);
   const currentMinPrice = useAppSelector(getCurrentMinPrice);
   const currentMaxPrice = useAppSelector(getCurrentMaxPrice);
+  const currentPage = useAppSelector(getCurrentPage);
 
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -51,13 +52,17 @@ export default function CatalogPage () : JSX.Element{
     if (key === 'level' && !level.includes(value)) {
       level.push(value);
     }
+
   }
 
   const currentParams = useMemo(() => {
     const params: QueryParam = {};
-
-    if (currentSortOrder && currentSortType) {
+    if(currentPage === null){
+      dispatch(setCurrentPage(DEFAULT_PAGINATION_PAGE));
+    }
+    if (currentSortOrder && currentSortType && currentPage) {
       params.sortBy = currentSortType;
+      params.page = currentPage.toString();
       params.order = sortOrderQueryValue[currentSortOrder];
     } else if (!currentCategory && !currentTypes.length && !currentLevels.length && !currentMinPrice && !currentMaxPrice) {
       return;
@@ -65,11 +70,12 @@ export default function CatalogPage () : JSX.Element{
     if (currentCategory) { params.category = currentCategory; }
     if (currentTypes) { params.type = currentTypes; }
     if (currentLevels) { params.level = currentLevels; }
+    if (currentPage) { params.page = currentPage.toString(); }
     if (currentMinPrice) { params['price_gte'] = currentMinPrice.toString(); }
     if (currentMaxPrice) { params['price_lte'] = currentMaxPrice.toString(); }
 
     return params;
-  }, [currentSortType, currentSortOrder, currentCategory, currentTypes, currentLevels, currentMinPrice, currentMaxPrice]);
+  }, [currentSortType, currentSortOrder, currentCategory, currentTypes, currentLevels, currentMinPrice, currentMaxPrice, currentPage]);
 
   useEffect(() => {
     if(currentSortType === null && currentSortOrder !== null){

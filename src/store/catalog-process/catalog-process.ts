@@ -57,7 +57,7 @@ export const catalogProcess = createSlice({
     selectSortOrder: (state, action: PayloadAction<SortOrder | null>) => {
       state.sortOrder = action.payload;
     },
-    setCurrentPage: (state, action: PayloadAction<number | null>) => {
+    setCurrentPage: (state, action: PayloadAction<number>) => {
       state.currentPage = action.payload;
     },
     setCurrentCameras: (state, action: PayloadAction<Cameras>) => {

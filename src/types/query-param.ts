@@ -6,4 +6,5 @@ export type QueryParam = {
   level?: string[];
   price_gte?: string;
   price_lte?: string;
+  page?: string;
 };
