@@ -36,7 +36,7 @@ describe('Component: pagination', () => {
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <Pagination currentPage={currentPage} pageCount={pageCount}/>
+          <Pagination currentPage={currentPage} pageCount={pageCount} onPageChange={jest.fn()}/>
           <h3>pagination</h3>
         </HistoryRouter>
       </Provider>

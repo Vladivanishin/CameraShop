@@ -6,9 +6,10 @@ import clsx from 'clsx';
 type PaginationProps = {
   currentPage: number;
   pageCount: number;
+  onPageChange: (page: number) => void;
 }
 
-export default function Pagination({ currentPage, pageCount }: PaginationProps): JSX.Element {
+export default function Pagination({ currentPage, pageCount, onPageChange }: PaginationProps): JSX.Element {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,6 +26,7 @@ export default function Pagination({ currentPage, pageCount }: PaginationProps):
             <Link
               className="pagination__link pagination__link--text"
               to={generatePath(AppRoute.CatalogPage, { page: `?page_${currentPage - 1}` })}
+              onClick={() => onPageChange(currentPage - 1)}
             >
               Назад
             </Link>
@@ -34,6 +36,7 @@ export default function Pagination({ currentPage, pageCount }: PaginationProps):
             <Link
               className={clsx('pagination__link', page === currentPage && 'pagination__link--active')}
               to={generatePath(AppRoute.CatalogPage, { page: `?page_${page}` })}
+              onClick={() => onPageChange(page)}
             >
               {page}
             </Link>
@@ -44,6 +47,7 @@ export default function Pagination({ currentPage, pageCount }: PaginationProps):
             <Link
               className="pagination__link pagination__link--text"
               to={generatePath(AppRoute.CatalogPage, { page: `?page_${currentPage + 1}` })}
+              onClick={() => onPageChange(currentPage + 1)}
             >
               Далее
             </Link>
