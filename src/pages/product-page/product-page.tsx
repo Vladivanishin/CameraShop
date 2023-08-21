@@ -4,7 +4,7 @@ import Header from '../../components/header/header';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getCameras, getModalBuyStatus, getModalReviewStatus, getModalSuccess, getSelectedProduct } from '../../store/catalog-process/selectors';
 import LoadingPage from '../loading-page/loading-page';
-import { AppRoute, NONE_RATING, TabsControl } from '../../conts';
+import { NONE_RATING, TabsControl } from '../../conts';
 import Similar from '../../components/similar/similar';
 import { getCurrentTabControl, getReviews, getSimilarCameras } from '../../store/product-process/selectors';
 import { fetchCameraAction, fetchCamerasAction, fetchReviewsAction, fetchSimilarAction } from '../../store/api-actions';
@@ -16,6 +16,7 @@ import Reviews from '../../components/reviews/reviews';
 import ModalSuccess from '../../components/modal-success/modal-success';
 import ModalReview from '../../components/modal-review/modal-review';
 import ModalBuy from '../../components/modal-buy/modal-buy';
+import BreadcrumbsProduct from '../../components/breadcrumbs/breadcrumbs-product/breadcrumbs-product';
 
 const body = document.querySelector('body');
 
@@ -77,28 +78,7 @@ export default function ProductPage (): JSX.Element{
       <Header />
       <main>
         <div className="page-content">
-          <div className="breadcrumbs">
-            <div className="container">
-              <ul className="breadcrumbs__list">
-                <li className="breadcrumbs__item">
-                  <Link className="breadcrumbs__link" to={'/'}>Главная
-                    <svg width="5" height="8" aria-hidden="true">
-                      <use xlinkHref="#icon-arrow-mini"></use>
-                    </svg>
-                  </Link>
-                </li>
-                <li className="breadcrumbs__item">
-                  <Link className="breadcrumbs__link" to={AppRoute.Catalog}>Каталог
-                    <svg width="5" height="8" aria-hidden="true">
-                      <use xlinkHref="#icon-arrow-mini"></use>
-                    </svg>
-                  </Link>
-                </li>
-                <li className="breadcrumbs__item"><span className="breadcrumbs__link breadcrumbs__link--active">{`${selectedProduct.category} ${selectedProduct.name}`}</span>
-                </li>
-              </ul>
-            </div>
-          </div>
+          <BreadcrumbsProduct />
           <div className="page-content__section">
             <section className="product">
               <div className="container">

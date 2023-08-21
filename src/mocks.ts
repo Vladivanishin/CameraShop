@@ -21,6 +21,7 @@ export const makeFakeCamera = (): Camera => ({
   previewImg2x: image.imageUrl(),
   previewImgWebp: image.imageUrl(),
   previewImgWebp2x: image.imageUrl(),
+  rating: datatype.number(),
 });
 
 export const makeFakeReview = () : Review => ({

@@ -2,46 +2,45 @@ import { render, screen } from '@testing-library/react';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
+import EmptyList from './empty-list';
+import { makeFakeCamera, makeFakePromo } from '../../mocks';
+import { NameSpace } from '../../conts';
 import HistoryRouter from '../history-route/history-route';
-import { NameSpace, TabsControl } from '../../conts';
-import { makeFakeCamera, makeFakePromo, makeFakeReview } from '../../mocks';
-import Pagination from './pagination';
 
 const mockStore = configureMockStore();
+const camera = makeFakeCamera();
 const history = createMemoryHistory();
 const store = mockStore({
   [NameSpace.Catalog]: {
-    cameras: [makeFakeCamera()],
+    cameras: [camera],
     isLoading: false,
     isError: false,
     promo: makeFakePromo(),
-    product: makeFakeCamera(),
+    product: null,
     isModalBuy: false,
     isModalReview: false,
     isModalSuccess: false,
+    sortType: null,
+    sortOrder: null,
   },
-  [NameSpace.Product]: {
-    similarCameras: [makeFakeCamera()],
-    currentTabControl: TabsControl.Description,
-    reviews: [makeFakeReview()],
-  },
+  [NameSpace.Filters]: {
+    category: null,
+    types: [],
+    levels: [],
+    minPrice: 0,
+    maxPrice: 0,
+  }
 });
-const currentPage = 1;
-const pageCount = 5;
 
-
-describe('Component: pagination', () => {
+describe('Component: EmptyList', () => {
   it('should render correctly', () => {
-
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <Pagination currentPage={currentPage} pageCount={pageCount}/>
-          <h3>pagination</h3>
+          <EmptyList />
         </HistoryRouter>
       </Provider>
     );
-    expect(screen.getByText(/pagination/i)).toBeInTheDocument();
+    expect(screen.getByText(/По вашему запросу ничего не найдено/i)).toBeInTheDocument();
   });
-
 });

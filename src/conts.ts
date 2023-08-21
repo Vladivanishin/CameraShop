@@ -73,6 +73,6 @@ export enum SortOrder {
 }
 
 export const sortOrderQueryValue = {
-  [SortOrder.UP]: 'asc',
-  [SortOrder.Down]: 'desc'
+  [SortOrder.UP]: 'up',
+  [SortOrder.Down]: 'down'
 };

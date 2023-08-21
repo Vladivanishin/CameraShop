@@ -1,7 +1,7 @@
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Camera, Cameras, Review } from './types/catalog';
-import { CameraCategory, CameraLevel, CameraType } from './conts';
+import { CameraCategory, CameraLevel, CameraType, SortOrder, SortType } from './conts';
 
 export const notify = (text: string) => toast(text);
 
@@ -104,4 +104,36 @@ export const filterCameras = (cameras: Camera[], category: CameraCategory | null
   const filteredCamerasByPrice = filterCamerasByPrice(filteredCamerasByLevels, minPrice, maxPrice);
 
   return filteredCamerasByPrice;
+};
+
+export const sortCameras = (cameras: Camera[], sortType: SortType | null, sortOrder: SortOrder | null): Camera[] => {
+  let sortedCamerasByType: Camera[] = [];
+
+  switch (sortType) {
+    case SortType.Popular:
+      sortedCamerasByType = [...cameras].sort((a, b) => b.rating - a.rating);
+      break;
+    case SortType.Price:
+      sortedCamerasByType = [...cameras].sort((a, b) => b.price - a.price);
+      break;
+    default:
+      sortedCamerasByType = [...cameras];
+      break;
+  }
+
+  let sortedCamerasByOrder: Camera[] = [];
+
+  switch (sortOrder) {
+    case SortOrder.UP:
+      sortedCamerasByOrder = sortedCamerasByType.reverse();
+      break;
+    case SortOrder.Down:
+      sortedCamerasByOrder = sortedCamerasByType;
+      break;
+    default:
+      sortedCamerasByOrder = [...cameras];
+      break;
+  }
+
+  return sortedCamerasByOrder;
 };

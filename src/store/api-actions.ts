@@ -3,7 +3,7 @@ import { AppDispatch, State } from '../types/state';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Camera, Cameras, CouponType, Order, ReviewRequest, ReviewResponse, Reviews } from '../types/catalog';
 import { APIRoute} from '../conts';
-import { notify } from '../utils';
+import { getRatingCameras, notify } from '../utils';
 import { Promo } from '../types/catalog';
 
 type ThunkConfig = {
@@ -13,13 +13,14 @@ type ThunkConfig = {
 };
 
 export const fetchCamerasAction = createAsyncThunk<
-Cameras,
-undefined,
-ThunkConfig
+  Cameras,
+  undefined,
+  ThunkConfig
 >('fetchCamerasAction', async (_, { extra: api }) => {
   try {
     const { data: cameras } = await api.get<Cameras>(APIRoute.Cameras, { params: { _embed: 'reviews' } });
-    return cameras;
+    const updatedCameras = getRatingCameras(cameras);
+    return updatedCameras;
   } catch (error) {
     notify('Список товаров не получен!');
     throw error;

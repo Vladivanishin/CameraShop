@@ -14,7 +14,7 @@ export type Camera = {
   previewImg2x: string;
   previewImgWebp: string;
   previewImgWebp2x: string;
-  rating?: number;
+  rating: number;
   reviews?: Reviews;
 }
 

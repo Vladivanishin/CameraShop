@@ -1,11 +1,11 @@
 import { render, screen } from '@testing-library/react';
-import { configureMockStore } from '@jedmao/redux-mock-store';
 import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
-import HistoryRouter from '../history-route/history-route';
-import { NameSpace, TabsControl } from '../../conts';
-import { makeFakeCamera, makeFakePromo, makeFakeReview } from '../../mocks';
-import Pagination from './pagination';
+import HistoryRouter from '../../history-route/history-route';
+import { makeFakeCamera, makeFakePromo, makeFakeReview } from '../../../mocks';
+import { configureMockStore } from '@jedmao/redux-mock-store';
+import { NameSpace, TabsControl } from '../../../conts';
+import SortByOrder from './sort-by-order';
 
 const mockStore = configureMockStore();
 const history = createMemoryHistory();
@@ -26,22 +26,18 @@ const store = mockStore({
     reviews: [makeFakeReview()],
   },
 });
-const currentPage = 1;
-const pageCount = 5;
 
-
-describe('Component: pagination', () => {
+describe('Component: SortByOrder', () => {
   it('should render correctly', () => {
 
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <Pagination currentPage={currentPage} pageCount={pageCount}/>
-          <h3>pagination</h3>
+          <SortByOrder />
         </HistoryRouter>
       </Provider>
     );
-    expect(screen.getByText(/pagination/i)).toBeInTheDocument();
-  });
 
+    expect(screen.getByTestId('sort-by-order')).toBeInTheDocument();
+  });
 });
