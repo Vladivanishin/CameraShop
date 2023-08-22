@@ -25,11 +25,6 @@ export function getRating(reviews: Review[]): number {
   return rating;
 }
 
-// export const getRating = (reviews: Review[]): number => {
-//   const rating = reviews.length ? reviews.reduce((acc, review) => acc + review.rating, 0) / reviews.length : 0;
-//   return rating;
-// };
-
 export function getRatingCameras(cameras: Cameras): Cameras {
   return cameras.map((camera) => {
     if (camera.reviews) {

@@ -43,6 +43,7 @@ export default function CatalogPage () : JSX.Element{
   const level: string[] = [];
   const priceGte = searchParams.get('price_gte');
   const priceLte = searchParams.get('price_lte');
+  const page = searchParams.get('page');
 
   for (const [key, value] of searchParams.entries()) {
     if (key === 'type' && !type.includes(value)) {
@@ -76,6 +77,12 @@ export default function CatalogPage () : JSX.Element{
 
     return params;
   }, [currentSortType, currentSortOrder, currentCategory, currentTypes, currentLevels, currentMinPrice, currentMaxPrice, currentPage]);
+
+  useEffect(() => {
+    if(page !== currentPage && currentPage !== null && page !== null){
+      dispatch(setCurrentPage(Number(page)));
+    }
+  },[page]);
 
   useEffect(() => {
     if(currentSortType === null && currentSortOrder !== null){
