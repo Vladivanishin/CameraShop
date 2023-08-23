@@ -44,7 +44,7 @@ export default function SearchBar(): JSX.Element {
     } else if (searchedCameras.length && isDownArrowPressed) {
       setCurrentCameraIndex((prev) => (prev < searchedCameras.length - 1 ? prev + 1 : prev));
     }
-  }, [isUpArrowPressed, isDownArrowPressed, searchedCameras.length, currentCameraIndex]);
+  }, [isUpArrowPressed, isDownArrowPressed, searchedCameras.length]);
 
   useEffect(()=> {
     if (searchedCameras.length && isEscPressed) {

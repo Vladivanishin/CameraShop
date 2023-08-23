@@ -5,6 +5,7 @@ export const COUNT_STARS_REVIEW = 5;
 export const DEFAULT_PAGINATION_PAGE = 1;
 export const SEARCH_BAR_COUNT_CAMERAS = 4;
 export const NONE_RATING = 0;
+export const STARS_ARRAY_RATING = [1, 2, 3, 4, 5];
 
 export enum AppRoute {
   Catalog = '/catalog',

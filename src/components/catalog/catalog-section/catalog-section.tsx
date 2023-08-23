@@ -1,11 +1,11 @@
 import { useAppSelector } from '../../../hooks';
 import { getCurrentPage, getFilteredCameras } from '../../../store/catalog-process/selectors';
 import { DEFAULT_PAGINATION_PAGE, ITEMS_PER_PAGE } from '../../../conts';
-import CatalogFilters from '../catalog-filters.tsx/catalog-filters';
 import CatalogSort from '../catalog-sort/catalog-sort';
 import EmptyList from '../../empty-list/empty-list';
 import CardList from '../../product/card-list/card-list';
 import Pagination from '../../pagination/pagination';
+import CatalogFilters from '../catalog-filters/catalog-filters';
 
 export default function CatalogSection(): JSX.Element {
   const cameras = useAppSelector(getFilteredCameras);

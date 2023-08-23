@@ -1,3 +1,4 @@
+import { STARS_ARRAY_RATING } from '../../conts';
 import { ReviewResponse } from '../../types/catalog';
 import dayjs from 'dayjs';
 
@@ -17,21 +18,17 @@ export default function ReviewCard({review}: ReviewCardProps): JSX.Element{
         <time className="review-card__data" dateTime={formatDateTime}>{formatUserDate}</time>
       </div>
       <div className="rate review-card__rate">
-        <svg width="17" height="16" aria-hidden="true">
-          <use xlinkHref={`${review.rating !== 0 ? '#icon-full-star' : '#icon-star'}`}></use>
-        </svg>
-        <svg width="17" height="16" aria-hidden="true">
-          <use xlinkHref={`${review.rating === 2 || review.rating === 3 || review.rating === 4 || review.rating === 5 ? '#icon-full-star' : '#icon-star'}`}></use>
-        </svg>
-        <svg width="17" height="16" aria-hidden="true">
-          <use xlinkHref={`${review.rating === 3 || review.rating === 4 || review.rating === 5 ? '#icon-full-star' : '#icon-star'}`}></use>
-        </svg>
-        <svg width="17" height="16" aria-hidden="true">
-          <use xlinkHref={`${review.rating === 4 || review.rating === 5 ? '#icon-full-star' : '#icon-star'}`}></use>
-        </svg>
-        <svg width="17" height="16" aria-hidden="true">
-          <use xlinkHref={`${review.rating === 5 ? '#icon-full-star' : '#icon-star'}`}></use>
-        </svg>
+        {Array.from(STARS_ARRAY_RATING).map((star) => (
+          <svg
+            key={star}
+            width="17"
+            height="16"
+            aria-hidden="true"
+            className={review.rating >= star ? 'full-star' : 'empty-star'}
+          >
+            <use xlinkHref={`#icon-${review.rating >= star ? 'full-star' : 'star'}`}></use>
+          </svg>
+        ))}
         <p className="visually-hidden">Оценка: {review.rating}</p>
       </div>
       <ul className="review-card__list">
