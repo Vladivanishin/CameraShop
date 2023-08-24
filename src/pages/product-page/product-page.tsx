@@ -4,7 +4,7 @@ import Header from '../../components/header/header';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getCameras, getModalBuyStatus, getModalReviewStatus, getModalSuccess, getSelectedProduct } from '../../store/catalog-process/selectors';
 import LoadingPage from '../loading-page/loading-page';
-import { NONE_RATING, TabsControl } from '../../conts';
+import { STARS_ARRAY_RATING, TabsControl } from '../../conts';
 import Similar from '../../components/similar/similar';
 import { getCurrentTabControl, getReviews, getSimilarCameras } from '../../store/product-process/selectors';
 import { fetchCameraAction, fetchCamerasAction, fetchReviewsAction, fetchSimilarAction } from '../../store/api-actions';
@@ -90,21 +90,17 @@ export default function ProductPage (): JSX.Element{
                 <div className="product__content">
                   <h1 className="title title--h3">{selectedProduct.name}</h1>
                   <div className="rate product__rate">
-                    <svg width="17" height="16" aria-hidden="true">
-                      <use xlinkHref={`${rating !== NONE_RATING ? '#icon-full-star' : '#icon-star'}`}></use>
-                    </svg>
-                    <svg width="17" height="16" aria-hidden="true">
-                      <use xlinkHref={`${rating === 2 || rating === 3 || rating === 4 || rating === 5 ? '#icon-full-star' : '#icon-star'}`}></use>
-                    </svg>
-                    <svg width="17" height="16" aria-hidden="true">
-                      <use xlinkHref={`${rating === 3 || rating === 4 || rating === 5 ? '#icon-full-star' : '#icon-star'}`}></use>
-                    </svg>
-                    <svg width="17" height="16" aria-hidden="true">
-                      <use xlinkHref={`${rating === 4 || rating === 5 ? '#icon-full-star' : '#icon-star'}`}></use>
-                    </svg>
-                    <svg width="17" height="16" aria-hidden="true">
-                      <use xlinkHref={`${rating === 5 ? '#icon-full-star' : '#icon-star'}`}></use>
-                    </svg>
+                    {Array.from(STARS_ARRAY_RATING).map((star) => (
+                      <svg
+                        key={star}
+                        width="17"
+                        height="16"
+                        aria-hidden="true"
+                        className={rating >= star ? 'full-star' : 'empty-star'}
+                      >
+                        <use xlinkHref={`#icon-${rating >= star ? 'full-star' : 'star'}`}></use>
+                      </svg>
+                    ))}
                     <p className="visually-hidden">Рейтинг: {rating}</p>
                     <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>{selectedProduct.reviewCount}</p>
                   </div>
