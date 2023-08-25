@@ -57,6 +57,13 @@ export default function SearchBar(): JSX.Element {
 
   const handleResetClick = () => {
     setSearchQuery('');
+    inputRef.current?.focus();
+  };
+
+  const handleInputBlur = (evt: React.FocusEvent<HTMLInputElement>) => {
+    if (!evt.relatedTarget) {
+      handleResetClick();
+    }
   };
 
   const onSearchItemClick = (cameraId: number) => {
@@ -86,6 +93,7 @@ export default function SearchBar(): JSX.Element {
               value={searchQuery}
               onChange={handleChange}
               ref={inputRef}
+              onBlur={handleInputBlur}
             />
           </label>
           <ul className={clsx('form-search__select-list', searchedCameras.length > SEARCH_BAR_COUNT_CAMERAS && 'scroller')}>

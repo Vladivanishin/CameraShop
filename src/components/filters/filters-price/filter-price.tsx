@@ -1,16 +1,17 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
-import { getCameras } from '../../../store/catalog-process/selectors';
+import { getFilteredCameras } from '../../../store/catalog-process/selectors';
 import { getCurrentMaxPrice, getCurrentMinPrice } from '../../../store/filters-process/selectors';
 import { getPrice } from '../../../utils';
 import { setMaxPrice, setMinPrice } from '../../../store/filters-process/filters-process';
+import { KeyCode } from '../../../conts';
 
 type FilterByPriceProps = {
   isReset: boolean;
 };
 
 export default function FilterPrice({ isReset }: FilterByPriceProps): JSX.Element {
-  const cameras = useAppSelector(getCameras);
+  const cameras = useAppSelector(getFilteredCameras);
   const dispatch = useAppDispatch();
 
   const currentMinPrice = useAppSelector(getCurrentMinPrice);
@@ -19,18 +20,13 @@ export default function FilterPrice({ isReset }: FilterByPriceProps): JSX.Elemen
   const minPrice = getPrice(cameras, 'min');
   const maxPrice = getPrice(cameras, 'max');
 
-  useEffect(() => {
-    dispatch(setMinPrice(Number(minPrice)));
-    dispatch(setMaxPrice(Number(maxPrice)));
-  },[dispatch, minPrice, maxPrice]);
-
-  const [minPriceValue, setMinPriceValue] = useState(currentMinPrice || Number(minPrice));
-  const [maxPriceValue, setMaxPriceValue] = useState(Number(maxPrice) || currentMaxPrice);
+  const [minPriceValue, setMinPriceValue] = useState(currentMinPrice || 0);
+  const [maxPriceValue, setMaxPriceValue] = useState(0 || currentMaxPrice);
 
   useEffect(() => {
     if (isReset) {
-      setMinPriceValue(Number(minPrice));
-      setMaxPriceValue(Number(maxPrice));
+      setMinPriceValue(0);
+      setMaxPriceValue(0);
     }
   }, [isReset]);
 
@@ -46,10 +42,22 @@ export default function FilterPrice({ isReset }: FilterByPriceProps): JSX.Elemen
     setMaxPriceValue(+value);
   };
 
+  const handleMinPriceKeyDown = (evt: KeyboardEvent<HTMLInputElement>) => {
+    if (evt.code === KeyCode.Enter) {
+      handleMinPriceBlur();
+    }
+  };
+
+  const handleMaxPriceKeyDown = (evt: KeyboardEvent<HTMLInputElement>) => {
+    if (evt.code === KeyCode.Enter) {
+      handleMaxPriceBlur();
+    }
+  };
+
   const handleMinPriceBlur = () => {
     if (!minPriceValue) {
-      setMinPriceValue(Number(minPrice));
-      dispatch(setMinPrice(Number(minPrice)));
+      setMinPriceValue(0);
+      dispatch(setMinPrice(0));
 
       return;
     }
@@ -109,6 +117,7 @@ export default function FilterPrice({ isReset }: FilterByPriceProps): JSX.Elemen
               onChange={handleMinPriceInputChange}
               onBlur={handleMinPriceBlur}
               value={minPriceValue || ''}
+              onKeyDown={handleMinPriceKeyDown}
             />
           </label>
         </div>
@@ -121,6 +130,7 @@ export default function FilterPrice({ isReset }: FilterByPriceProps): JSX.Elemen
               onChange={handleMaxPriceInputChange}
               onBlur={handleMaxPriceBlur}
               value={maxPriceValue || ''}
+              onKeyDown={handleMaxPriceKeyDown}
             />
           </label>
         </div>

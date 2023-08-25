@@ -14,7 +14,7 @@ const initialState: FilterProcess = {
   types: [],
   levels: [],
   minPrice: 0,
-  maxPrice: 0
+  maxPrice: 0,
 };
 
 export const filtersProcess = createSlice({

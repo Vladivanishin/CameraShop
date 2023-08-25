@@ -99,7 +99,7 @@ export default function CatalogPage () : JSX.Element{
       dispatch(selectSortType(sortType as SortType));
       dispatch(selectSortOrder(sortOrder === sortOrderQueryValue[SortOrder.UP] ? SortOrder.UP : SortOrder.Down));
     }
-  }, [sortType, sortOrder, dispatch]);
+  }, [sortType, sortOrder]);
 
   useEffect(() => {
     if (category) {
@@ -115,7 +115,7 @@ export default function CatalogPage () : JSX.Element{
     if (priceLte) {
       dispatch(setMaxPrice(+priceLte));
     }
-  }, [priceGte, priceLte, dispatch]);
+  }, [priceGte, priceLte]);
 
   useEffect(() => {
     if (type.length) {
