@@ -50,3 +50,12 @@ export const getFilteredCameras = createSelector(
   [getSortedCameras, getCurrentCategory, getCurrentTypes, getCurrentLevels, getCurrentMinPrice, getCurrentMaxPrice],
   (cameras, category, types, levels, minPrice, maxPrice) => filterCameras(cameras, category, types, levels, minPrice, maxPrice)
 );
+
+export const getModalProductAddedStatus = (state: State) : boolean =>
+  state[NameSpace.Catalog].isModalProductAdded;
+
+export const getModalRemoveStatus = (state: State) : boolean =>
+  state[NameSpace.Catalog].isModalRemove;
+
+export const getModalSuccessOrder = (state: State) : boolean =>
+  state[NameSpace.Catalog].isModalSuccessOrder;

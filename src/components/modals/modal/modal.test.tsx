@@ -2,10 +2,10 @@ import { render, screen } from '@testing-library/react';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
-import HistoryRouter from '../history-route/history-route';
-import { NameSpace, TabsControl } from '../../conts';
-import { makeFakeBasketCamera, makeFakeCamera, makeFakePromo, makeFakeReview } from '../../mocks';
-import SimilarList from './similar-list';
+import HistoryRouter from '../../history-route/history-route';
+import { NameSpace, TabsControl } from '../../../conts';
+import { makeFakeCamera, makeFakePromo, makeFakeReview } from '../../../mocks';
+import Modal from './modal';
 
 const mockStore = configureMockStore();
 const history = createMemoryHistory();
@@ -25,29 +25,25 @@ const store = mockStore({
     currentTabControl: TabsControl.Description,
     reviews: [makeFakeReview()],
   },
-  [NameSpace.Basket]: {
-    basketCameras: [makeFakeBasketCamera()],
-    isLoading: false,
-    isError: false,
-    totalCount: 0,
-    totalPrice: 0,
-    discount: 0,
-    coupon: 0,
-  },
 });
-
-
-describe('Component: SimilarList', () => {
+let isOpen = true;
+const onClose = () => {
+  isOpen = !isOpen;
+};
+describe('Component: Modal', () => {
   it('should render correctly', () => {
-
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <SimilarList cameras={[makeFakeCamera()]}/>
+          <Modal isOpen={isOpen} onClose={onClose}>
+            <h3>modal</h3>
+          </Modal>
         </HistoryRouter>
       </Provider>
     );
-    expect(screen.getByTestId('similar-list')).toBeInTheDocument();
+
+    expect(screen.getByText('modal')).toBeInTheDocument();
+    expect(screen.getByTestId('modal')).toBeInTheDocument();
   });
 
 });

@@ -1,21 +1,30 @@
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import LoadingPage from '../../pages/loading-page/loading-page';
-import { modalBuy } from '../../store/catalog-process/catalog-process';
-import { getModalBuyStatus, getSelectedProduct } from '../../store/catalog-process/selectors';
-import { formatPrice } from '../../utils';
+import { useAppDispatch, useAppSelector } from '../../../hooks';
+import LoadingPage from '../../../pages/loading-page/loading-page';
+import { addBasketCamera } from '../../../store/basket-process/basket-process';
+import { modalBuy, setModalProductAdded } from '../../../store/catalog-process/catalog-process';
+import { getModalBuyStatus, getModalProductAddedStatus, getSelectedProduct } from '../../../store/catalog-process/selectors';
+import { formatPrice } from '../../../utils';
 
 export default function ModalAddBasket() : JSX.Element {
   const selectedProduct = useAppSelector(getSelectedProduct);
   const isModalBuy = useAppSelector(getModalBuyStatus);
   const dispatch = useAppDispatch();
+  const product = useAppSelector(getSelectedProduct);
+  const isModalProductAdded = useAppSelector(getModalProductAddedStatus);
 
   const handleCloseBuyModal = () => {
     dispatch(modalBuy(!isModalBuy));
   };
 
-  if(!selectedProduct){
+  if(!selectedProduct || !product){
     return <LoadingPage />;
   }
+
+  const handleClick = () => {
+    dispatch(addBasketCamera(product));
+    handleCloseBuyModal();
+    dispatch(setModalProductAdded(!isModalProductAdded));
+  };
 
   return (
     <>
@@ -38,7 +47,11 @@ export default function ModalAddBasket() : JSX.Element {
         </div>
       </div>
       <div className="modal__buttons">
-        <button className="btn btn--purple modal__btn modal__btn--fit-width" type="button">
+        <button
+          className="btn btn--purple modal__btn modal__btn--fit-width"
+          type="button"
+          onClick={handleClick}
+        >
           <svg width="24" height="16" aria-hidden="true">
             <use xlinkHref="#icon-add-basket"></use>
           </svg>Добавить в корзину

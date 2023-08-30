@@ -2,10 +2,11 @@ import { render, screen } from '@testing-library/react';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
-import HistoryRouter from '../history-route/history-route';
-import { NameSpace, TabsControl } from '../../conts';
-import { makeFakeCamera, makeFakePromo, makeFakeReview } from '../../mocks';
-import Modal from './modal';
+import HistoryRouter from '../../history-route/history-route';
+import { NameSpace, TabsControl } from '../../../conts';
+import { makeFakeCamera, makeFakePromo, makeFakeReview } from '../../../mocks';
+import ModalBuy from './modal-buy';
+import userEvent from '@testing-library/user-event';
 
 const mockStore = configureMockStore();
 const history = createMemoryHistory();
@@ -26,24 +27,21 @@ const store = mockStore({
     reviews: [makeFakeReview()],
   },
 });
-let isOpen = true;
-const onClose = () => {
-  isOpen = !isOpen;
-};
-describe('Component: Modal', () => {
+
+describe('Component: ModalBuy', () => {
   it('should render correctly', () => {
+
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <Modal isOpen={isOpen} onClose={onClose}>
-            <h3>modal</h3>
-          </Modal>
+          <ModalBuy />
         </HistoryRouter>
       </Provider>
     );
 
-    expect(screen.getByText('modal')).toBeInTheDocument();
-    expect(screen.getByTestId('modal')).toBeInTheDocument();
+    userEvent.tab();
+
+    expect(screen.getByText(/Добавить товар в корзину/i)).toBeInTheDocument();
   });
 
 });

@@ -1,8 +1,11 @@
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../conts';
 import SearchBar from '../search-bar/search-bar';
+import { useAppSelector } from '../../hooks';
+import { getTotalCount } from '../../store/basket-process/selectors';
 
 export default function Header () : JSX.Element {
+  const totalCount = useAppSelector(getTotalCount);
 
   return (
     <header className="header" id="header" data-testid="header">
@@ -29,6 +32,7 @@ export default function Header () : JSX.Element {
           <svg width="16" height="16" aria-hidden="true">
             <use xlinkHref="#icon-basket"></use>
           </svg>
+          {totalCount !== 0 && <span className="header__basket-count">{totalCount}</span>}
         </Link>
       </div>
     </header>

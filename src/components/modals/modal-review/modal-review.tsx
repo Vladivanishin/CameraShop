@@ -1,8 +1,8 @@
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { modalReview } from '../../store/catalog-process/catalog-process';
-import { getModalReviewStatus } from '../../store/catalog-process/selectors';
+import { useAppDispatch, useAppSelector } from '../../../hooks';
+import { modalReview } from '../../../store/catalog-process/catalog-process';
+import { getModalReviewStatus } from '../../../store/catalog-process/selectors';
 import Modal from '../modal/modal';
-import ReviewForm from '../review-form/review-form';
+import ReviewForm from '../../review-form/review-form';
 
 export default function ModalReview() : JSX.Element{
   const isModalReview = useAppSelector(getModalReviewStatus);

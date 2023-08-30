@@ -2,11 +2,10 @@ import { render, screen } from '@testing-library/react';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
-import HistoryRouter from '../history-route/history-route';
-import { NameSpace, TabsControl } from '../../conts';
-import { makeFakeCamera, makeFakePromo, makeFakeReview } from '../../mocks';
-import ModalSuccess from './modal-success';
-import userEvent from '@testing-library/user-event';
+import HistoryRouter from '../../history-route/history-route';
+import { NameSpace, TabsControl } from '../../../conts';
+import { makeFakeCamera, makeFakePromo, makeFakeReview } from '../../../mocks';
+import ModalRemoveItem from './modal-remove-item';
 
 const mockStore = configureMockStore();
 const history = createMemoryHistory();
@@ -28,20 +27,17 @@ const store = mockStore({
   },
 });
 
-describe('Component: ModalSuccess', () => {
+describe('Component: ModalRemove', () => {
   it('should render correctly', () => {
-
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <ModalSuccess />
+          <ModalRemoveItem />
         </HistoryRouter>
       </Provider>
     );
 
-    userEvent.tab();
-
-    expect(screen.getByText(/Спасибо за отзыв/i)).toBeInTheDocument();
+    expect(screen.getByText(/Удалить этот товар?/i)).toBeInTheDocument();
   });
 
 });

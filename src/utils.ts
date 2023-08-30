@@ -2,6 +2,8 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Camera, Cameras, Review } from './types/catalog';
 import { CameraCategory, CameraLevel, CameraType, SortOrder, SortType } from './conts';
+import { EntityAdapter, EntityId, EntityState } from '@reduxjs/toolkit';
+import { State } from './types/state';
 
 export const notify = (text: string) => toast(text);
 
@@ -132,3 +134,38 @@ export const sortCameras = (cameras: Camera[], sortType: SortType | null, sortOr
 
   return sortedCamerasByOrder;
 };
+
+export const getTotalProductPrice = (price: number, count: number) => price * count;
+
+export const getInitialEntityAdapterState = <T, S extends object>(
+  adapter: EntityAdapter<T>,
+  initialState: S,
+  localStorageResult?: string | null
+) => {
+
+  if (localStorageResult) {
+    const result = JSON.parse(localStorageResult) as EntityState<T> & S;
+
+    return adapter.setAll(
+      adapter.getInitialState({ ...result }),
+      result.entities as Record<EntityId, T>
+    );
+  }
+
+
+  return adapter.getInitialState<S>(initialState);
+};
+
+export const saveToLocalStorage = (state: State['BASKET']) => {
+  const data = {
+    ...state,
+    discount: 0,
+    coupon: 0,
+  } as State['BASKET'];
+  localStorage.setItem('LOCAL_STORAGE', JSON.stringify(data));
+
+};
+
+export const getDiscount = (totalPrice: number, discount: number) => Math.round(totalPrice / 100 * discount);
+
+export const getFinalPrice = (totalPrice: number, discount: number) => totalPrice - discount;

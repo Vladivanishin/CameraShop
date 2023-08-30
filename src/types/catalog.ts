@@ -16,7 +16,11 @@ export type Camera = {
   previewImgWebp2x: string;
   rating: number;
   reviews?: Reviews;
+  count?: number;
+  totalPrice?: number;
 }
+
+export type BasketCamera = Camera & { count: number; totalPrice: number };
 
 export type Cameras = Camera[];
 

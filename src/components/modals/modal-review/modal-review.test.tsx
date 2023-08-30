@@ -2,11 +2,10 @@ import { render, screen } from '@testing-library/react';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
-import HistoryRouter from '../history-route/history-route';
-import { NameSpace, TabsControl } from '../../conts';
-import { makeFakeCamera, makeFakePromo, makeFakeReview } from '../../mocks';
-import ModalAddBasket from './modal-add-basket';
-import userEvent from '@testing-library/user-event';
+import HistoryRouter from '../../history-route/history-route';
+import { NameSpace, TabsControl } from '../../../conts';
+import { makeFakeCamera, makeFakePromo, makeFakeReview } from '../../../mocks';
+import ModalReview from './modal-review';
 
 const mockStore = configureMockStore();
 const history = createMemoryHistory();
@@ -28,20 +27,17 @@ const store = mockStore({
   },
 });
 
-describe('Component: ModalAddBasket', () => {
+describe('Component: ModalReview', () => {
   it('should render correctly', () => {
-
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <ModalAddBasket />
+          <ModalReview />
         </HistoryRouter>
       </Provider>
     );
 
-    userEvent.tab();
-
-    expect(screen.getByText(/Добавить товар в корзину/i)).toBeInTheDocument();
+    expect(screen.getByText(/Оставить отзыв/i)).toBeInTheDocument();
   });
 
 });

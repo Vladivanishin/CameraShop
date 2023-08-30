@@ -2,12 +2,12 @@ import { useEffect, useMemo } from 'react';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getCameras, getCurrentPage, getLoadingStatus, getModalBuyStatus, getPromo, getSelectedSortOrder, getSelectedSortType } from '../../store/catalog-process/selectors';
+import { getCameras, getCurrentPage, getLoadingStatus, getModalBuyStatus, getModalProductAddedStatus, getPromo, getSelectedSortOrder, getSelectedSortType } from '../../store/catalog-process/selectors';
 import { fetchCameraAction, fetchCamerasAction, fetchPromoAction } from '../../store/api-actions';
 import LoadingPage from '../loading-page/loading-page';
 import { Link, generatePath, useSearchParams } from 'react-router-dom';
 import { AppRoute, CameraCategory, CameraLevel, CameraType, DEFAULT_PAGINATION_PAGE, SortOrder, SortType, sortOrderQueryValue } from '../../conts';
-import ModalBuy from '../../components/modal-buy/modal-buy';
+import ModalBuy from '../../components/modals/modal-buy/modal-buy';
 import { selectSortOrder, selectSortType, setCurrentPage } from '../../store/catalog-process/catalog-process';
 import { getCurrentCategory, getCurrentLevels, getCurrentMaxPrice, getCurrentMinPrice, getCurrentTypes } from '../../store/filters-process/selectors';
 import { changeCategory, changeLevel, changeType, setMaxPrice, setMinPrice } from '../../store/filters-process/filters-process';
@@ -15,6 +15,7 @@ import { QueryParam } from '../../types/query-param';
 import { capitalizeFirstLetter } from '../../utils';
 import CatalogSection from '../../components/catalog/catalog-section/catalog-section';
 import BreadcrumbsMain from '../../components/breadcrumbs/breadcrumbs-main/breadcrumbs-main';
+import ModalProductAdded from '../../components/modals/modal-product-added/modal-product-added';
 
 const body = document.querySelector('body');
 
@@ -32,6 +33,7 @@ export default function CatalogPage () : JSX.Element{
   const currentMinPrice = useAppSelector(getCurrentMinPrice);
   const currentMaxPrice = useAppSelector(getCurrentMaxPrice);
   const currentPage = useAppSelector(getCurrentPage);
+  const isModalProductAdded = useAppSelector(getModalProductAddedStatus);
 
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -161,7 +163,7 @@ export default function CatalogPage () : JSX.Element{
     dispatch(fetchCameraAction(promo!.id));
   }
 
-  if(isModalActive === true){
+  if(isModalActive === true || isModalProductAdded === true){
     body?.classList.add('scroll-lock');
   } else {
     body?.classList.remove('scroll-lock');
@@ -182,6 +184,7 @@ export default function CatalogPage () : JSX.Element{
           <CatalogSection />
         </div>
         { isModalActive && <ModalBuy />}
+        { isModalProductAdded && <ModalProductAdded />}
       </main>
       <Footer />
     </div>

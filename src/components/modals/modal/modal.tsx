@@ -1,6 +1,6 @@
 import { useEffect, useRef, ReactNode, useCallback } from 'react';
-import { useAppSelector } from '../../hooks';
-import { getModalSuccess } from '../../store/catalog-process/selectors';
+import { useAppSelector } from '../../../hooks';
+import { getModalSuccess } from '../../../store/catalog-process/selectors';
 import ReactFocusLock from 'react-focus-lock';
 
 

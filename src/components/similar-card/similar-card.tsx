@@ -5,6 +5,7 @@ import { modalBuy, selectProduct } from '../../store/catalog-process/catalog-pro
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getModalBuyStatus } from '../../store/catalog-process/selectors';
 import { formatPrice, getRating, handleScrollTopClick } from '../../utils';
+import { getBasketCameras } from '../../store/basket-process/selectors';
 
 type SimilarCardProps = {
   camera : Camera;
@@ -13,6 +14,7 @@ type SimilarCardProps = {
 export default function SimilarCard({camera}: SimilarCardProps) : JSX.Element{
   const dispatch = useAppDispatch();
   const isActive = useAppSelector(getModalBuyStatus);
+  const basketCameras = useAppSelector(getBasketCameras);
 
   const rating = camera.reviews ? getRating(camera.reviews as Review[]) : NONE_RATING;
 
@@ -24,6 +26,8 @@ export default function SimilarCard({camera}: SimilarCardProps) : JSX.Element{
     dispatch(selectProduct(camera));
     handleScrollTopClick();
   };
+
+  const isOnBasket = basketCameras.find((item) => item.id === camera.id);
 
   return(
     <>
@@ -53,8 +57,7 @@ export default function SimilarCard({camera}: SimilarCardProps) : JSX.Element{
         </p>
       </div>
       <div className="product-card__buttons">
-        <button className="btn btn--purple product-card__btn" type="button" onClick={() => handleBuyClick()}>Купить
-        </button>
+        {isOnBasket ? <button className="btn btn--purple-border"><svg width="16" height="16" aria-hidden="true"><use xlinkHref="#icon-basket"></use></svg>В корзине</button> : <button className="btn btn--purple product-card__btn" type="button" onClick={() => handleBuyClick()}>Купить</button>}
         <Link className="btn btn--transparent" to={generatePath(AppRoute.Product, { id: `${camera.id}`})} onClick={() => handleMoreClick()}>Подробнее
         </Link>
       </div>

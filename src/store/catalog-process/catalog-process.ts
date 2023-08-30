@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { NameSpace, SortOrder, SortType } from '../../conts';
 import { Camera, Cameras, Promo } from '../../types/catalog';
-import { fetchCameraAction, fetchCamerasAction, fetchPostReviewAction, fetchPromoAction } from '../api-actions';
+import { fetchCameraAction, fetchCamerasAction, fetchPostNewOrderAction, fetchPostReviewAction, fetchPromoAction } from '../api-actions';
 
 export type CatalogProcess = {
   cameras: Cameras;
@@ -12,6 +12,9 @@ export type CatalogProcess = {
   isModalBuy: boolean;
   isModalReview: boolean;
   isModalSuccess: boolean;
+  isModalProductAdded: boolean;
+  isModalRemove: boolean;
+  isModalSuccessOrder: boolean;
   sortType: SortType | null;
   sortOrder: SortOrder | null;
   currentPage: number | null;
@@ -28,6 +31,9 @@ const initialState: CatalogProcess = {
   isModalBuy: false,
   isModalReview: false,
   isModalSuccess: false,
+  isModalProductAdded: false,
+  isModalRemove: false,
+  isModalSuccessOrder: false,
   sortType: null,
   sortOrder: null,
   currentPage: null,
@@ -65,6 +71,15 @@ export const catalogProcess = createSlice({
     },
     setCamerasWithRating: (state, action: PayloadAction<Cameras>) => {
       state.camerasWithRating = action.payload;
+    },
+    setModalProductAdded: (state, action: PayloadAction<boolean>) => {
+      state.isModalProductAdded = action.payload;
+    },
+    setModalRemove: (state, action: PayloadAction<boolean>) => {
+      state.isModalRemove = action.payload;
+    },
+    setModalSuccessOrder: (state, action: PayloadAction<boolean>) => {
+      state.isModalSuccessOrder = action.payload;
     },
   },
   extraReducers(builder) {
@@ -112,8 +127,11 @@ export const catalogProcess = createSlice({
         state.isError = true;
         state.isModalReview = false;
         state.isModalSuccess = false;
+      })
+      .addCase(fetchPostNewOrderAction.fulfilled, (state) => {
+        state.isModalSuccessOrder = true;
       });
   },
 });
 
-export const {selectProduct, modalBuy, modalReview, modalSuccess, selectSortType, selectSortOrder, setCurrentPage ,setCurrentCameras, setCamerasWithRating} = catalogProcess.actions;
+export const {selectProduct, modalBuy, modalReview, modalSuccess, selectSortType, selectSortOrder, setCurrentPage ,setCurrentCameras, setCamerasWithRating ,setModalProductAdded, setModalRemove, setModalSuccessOrder} = catalogProcess.actions;

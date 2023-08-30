@@ -1,6 +1,6 @@
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { modalBuy} from '../../store/catalog-process/catalog-process';
-import { getModalBuyStatus } from '../../store/catalog-process/selectors';
+import { useAppDispatch, useAppSelector } from '../../../hooks';
+import { modalBuy} from '../../../store/catalog-process/catalog-process';
+import { getModalBuyStatus } from '../../../store/catalog-process/selectors';
 import ModalAddBasket from '../modal-add-basket/modal-add-basket';
 import Modal from '../modal/modal';
 

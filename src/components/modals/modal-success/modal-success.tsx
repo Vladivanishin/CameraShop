@@ -1,6 +1,6 @@
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { modalSuccess } from '../../store/catalog-process/catalog-process';
-import {getModalSuccess } from '../../store/catalog-process/selectors';
+import { useAppDispatch, useAppSelector } from '../../../hooks';
+import { modalSuccess } from '../../../store/catalog-process/catalog-process';
+import {getModalSuccess } from '../../../store/catalog-process/selectors';
 import Modal from '../modal/modal';
 
 export default function ModalSuccess() : JSX.Element {

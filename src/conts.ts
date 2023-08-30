@@ -6,6 +6,8 @@ export const DEFAULT_PAGINATION_PAGE = 1;
 export const SEARCH_BAR_COUNT_CAMERAS = 4;
 export const NONE_RATING = 0;
 export const STARS_ARRAY_RATING = [1, 2, 3, 4, 5];
+export const MIN_PRODUCT_COUNT = 1;
+export const MAX_PRODUCT_COUNT = 99;
 
 export enum AppRoute {
   Catalog = '/catalog',
@@ -77,3 +79,9 @@ export const sortOrderQueryValue = {
   [SortOrder.UP]: 'up',
   [SortOrder.Down]: 'down'
 };
+
+export enum Coupon {
+  First = 'camera-333',
+  Second = 'camera-444',
+  Third = 'camera-555'
+}

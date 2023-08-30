@@ -118,6 +118,7 @@ export default function FilterPrice({ isReset }: FilterByPriceProps): JSX.Elemen
               onBlur={handleMinPriceBlur}
               value={minPriceValue || ''}
               onKeyDown={handleMinPriceKeyDown}
+              pattern="[0-9]*"
             />
           </label>
         </div>
@@ -131,6 +132,7 @@ export default function FilterPrice({ isReset }: FilterByPriceProps): JSX.Elemen
               onBlur={handleMaxPriceBlur}
               value={maxPriceValue || ''}
               onKeyDown={handleMaxPriceKeyDown}
+              pattern="[0-9]*"
             />
           </label>
         </div>

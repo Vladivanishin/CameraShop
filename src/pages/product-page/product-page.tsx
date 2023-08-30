@@ -2,7 +2,7 @@ import { Link, useLocation, useParams } from 'react-router-dom';
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getCameras, getModalBuyStatus, getModalReviewStatus, getModalSuccess, getSelectedProduct } from '../../store/catalog-process/selectors';
+import { getCameras, getModalBuyStatus, getModalProductAddedStatus, getModalReviewStatus, getModalSuccess, getSelectedProduct } from '../../store/catalog-process/selectors';
 import LoadingPage from '../loading-page/loading-page';
 import { STARS_ARRAY_RATING, TabsControl } from '../../conts';
 import Similar from '../../components/similar/similar';
@@ -13,10 +13,11 @@ import { selectTabsControl } from '../../store/product-process/product-process';
 import { formatPrice, getRating, handleScrollTopClick } from '../../utils';
 import { modalBuy, selectProduct } from '../../store/catalog-process/catalog-process';
 import Reviews from '../../components/reviews/reviews';
-import ModalSuccess from '../../components/modal-success/modal-success';
-import ModalReview from '../../components/modal-review/modal-review';
-import ModalBuy from '../../components/modal-buy/modal-buy';
+import ModalSuccess from '../../components/modals/modal-success/modal-success';
+import ModalReview from '../../components/modals/modal-review/modal-review';
+import ModalBuy from '../../components/modals/modal-buy/modal-buy';
 import BreadcrumbsProduct from '../../components/breadcrumbs/breadcrumbs-product/breadcrumbs-product';
+import ModalProductAdded from '../../components/modals/modal-product-added/modal-product-added';
 
 const body = document.querySelector('body');
 
@@ -30,6 +31,7 @@ export default function ProductPage (): JSX.Element{
   const isModalBuy = useAppSelector(getModalBuyStatus);
   const isModalReview = useAppSelector(getModalReviewStatus);
   const isModalSuccess = useAppSelector(getModalSuccess);
+  const isModalProductAdded = useAppSelector(getModalProductAddedStatus);
   const reviews = useAppSelector(getReviews);
   const locationURL = useLocation();
   const rating = getRating(reviews);
@@ -67,7 +69,7 @@ export default function ProductPage (): JSX.Element{
     dispatch(modalBuy(!isModalBuy));
   };
 
-  if(isModalBuy === true || isModalReview === true || isModalSuccess === true){
+  if(isModalBuy === true || isModalReview === true || isModalSuccess === true || isModalProductAdded === true){
     body?.classList.add('scroll-lock');
   } else {
     body?.classList.remove('scroll-lock');
@@ -165,6 +167,7 @@ export default function ProductPage (): JSX.Element{
       { isModalBuy && <ModalBuy />}
       { isModalReview && <ModalReview />}
       { isModalSuccess && <ModalSuccess />}
+      { isModalProductAdded && <ModalProductAdded />}
       <Footer />
     </div>
   );
