@@ -79,9 +79,3 @@ export const sortOrderQueryValue = {
   [SortOrder.UP]: 'up',
   [SortOrder.Down]: 'down'
 };
-
-export enum Coupon {
-  First = 'camera-333',
-  Second = 'camera-444',
-  Third = 'camera-555'
-}

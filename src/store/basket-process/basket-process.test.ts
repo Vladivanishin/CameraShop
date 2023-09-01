@@ -1,77 +1,136 @@
-import { Coupon } from '../../conts';
-import { makeFakeCamera } from '../../mocks';
-import { productsAdapter, basketProcess, decrementCameraCount, removeCamera, setCameraCount, setCoupon, addBasketCamera, initialState, resetBasket } from './basket-process';
+import { EntityState } from '@reduxjs/toolkit';
+import { BasketCamera, Camera } from '../../types/catalog';
+import { BasketProcess, addBasketCamera, basketProcess, decrementCameraCount, productsAdapter, removeCamera, resetBasket, setCameraCount, setCoupon, setErrorStatus } from './basket-process';
+import { CameraCategory, CameraLevel, CameraType } from '../../conts';
 
-const camera = makeFakeCamera();
-const mockState = productsAdapter.addOne(productsAdapter.getInitialState({
-  ...initialState,
-  basketCameras: [{...camera, count: 1, price: 1}],
+const initialState: EntityState<BasketCamera> & BasketProcess = {
+  ...productsAdapter.getInitialState(),
+  basketCameras: [],
   isLoading: false,
-  isError: false,
-  totalCount: 1,
-  totalPrice: 1,
+  isError: null,
+  totalCount: 0,
+  totalPrice: 0,
   discount: 0,
-  coupon: Coupon.First,
-}), {
-  ...camera,
-  price: 1,
-  count: 1,
-  totalPrice: 1,
-});
+  coupon: 0,
+  ids: [],
+  entities: {},
+};
 
 describe('basketProcess', () => {
+  const camera1 : Camera = {
+    id: 1, name: 'Camera 1', price: 100,
+    vendorCode: '123',
+    type: CameraType.Collection,
+    category: CameraCategory.Photo,
+    description: '123',
+    level: CameraLevel.Amateur,
+    reviewCount: 0,
+    previewImg: '',
+    previewImg2x: '',
+    previewImgWebp: '',
+    previewImgWebp2x: '',
+    rating: 0,
+    count: 1,
+    totalPrice: 100,
+  };
+  const camera2 : Camera = {
+    id: 2, name: 'Camera 2', price: 200,
+    vendorCode: '123',
+    type: CameraType.Collection,
+    category: CameraCategory.Photo,
+    description: '123',
+    level: CameraLevel.Amateur,
+    reviewCount: 0,
+    previewImg: '',
+    previewImg2x: '',
+    previewImgWebp: '',
+    previewImgWebp2x: '',
+    rating: 0,
+    count: 1,
+    totalPrice: 200,
+  };
+  const camera3 : Camera = {
+    id: 3, name: 'Camera 3', price: 300,
+    vendorCode: '123',
+    type: CameraType.Collection,
+    category: CameraCategory.Photo,
+    description: '123',
+    level: CameraLevel.Amateur,
+    reviewCount: 0,
+    previewImg: '',
+    previewImg2x: '',
+    previewImgWebp: '',
+    previewImgWebp2x: '',
+    rating: 0,
+    count: 2,
+    totalPrice: 300,
+  };
+
   it('without additional parameters should return initial state', () => {
-
-    expect(basketProcess.reducer(mockState, { type: 'UNKNOWN_ACTION' }))
-      .toEqual(mockState);
+    expect(basketProcess.reducer(initialState, { type: 'UNKNOWN_ACTION' }))
+      .toEqual(initialState);
   });
 
-  it('should add camera to basket when dispatch addCamera', () => {
-    const product = makeFakeCamera();
-    product.id = 2;
-    product.count = 1;
-    product.totalPrice = 1;
-    product.price = 1;
-    const newState = productsAdapter.addOne({...mockState, basketCameras: [{...camera, count: 1, price: 1}, product]}, { ...product, count: 1, totalPrice: product.price});
-
-    expect(basketProcess.reducer(mockState, addBasketCamera(product)))
-      .toEqual({ ...newState, totalPrice: 2, totalCount: 2});
+  it('should add a camera to the basket', () => {
+    const state = basketProcess.reducer(initialState, addBasketCamera(camera1));
+    expect(state.basketCameras).toEqual([camera1]);
+    expect(state.totalCount).toBe(1);
+    expect(state.totalPrice).toBe(100);
   });
 
-  it('should decrease product count on dispatch decrementCount', () => {
-    const newState = productsAdapter.upsertOne({...mockState, basketCameras: [{...camera, count: 0, price: 1}]}, { ...camera, count: 0, totalPrice: 0, price: 1 });
-
-    expect(basketProcess.reducer(mockState, decrementCameraCount(camera)))
-      .toEqual({ ...newState, totalPrice: 0, totalCount: 0 });
+  it('should remove a camera from the basket', () => {
+    const state = basketProcess.reducer({...initialState, basketCameras: [camera1, camera2], totalCount: 1, totalPrice: 200}, removeCamera(camera1));
+    expect(state.basketCameras).toEqual([camera2]);
+    expect(state.totalCount).toBe(1);
+    expect(state.totalPrice).toBe(200);
   });
 
-  it('should remove product  on dispatch removeCamera', () => {
-    const newState = productsAdapter.removeOne({...mockState, basketCameras: []}, 1);
-
-    expect(basketProcess.reducer(mockState, removeCamera(camera)))
-      .toEqual({ ...newState, totalPrice: 0, totalCount: 0 });
+  it('should decrement the count of a camera in the basket', () => {
+    const state = basketProcess.reducer({...initialState, basketCameras: [camera3], totalCount: 1, totalPrice: 300}, decrementCameraCount(camera3));
+    expect(state.basketCameras).toEqual([{...camera3, count: 2}]);
+    expect(state.totalCount).toBe(1);
+    expect(state.totalPrice).toBe(300);
   });
 
-  it('should change product count on dispatch setCameraCount', () => {
-    const newState = productsAdapter.upsertOne({...mockState, basketCameras: [{...camera, count: 5, price: 1}]}, { ...camera, count: 5, totalPrice: 5, price: 1 });
-
-    expect(basketProcess.reducer(mockState, setCameraCount({ id: 1, count: 5 })))
-      .toEqual({ ...newState, totalPrice: 5, totalCount: 5 });
+  it('should set the count of a camera in the basket', () => {
+    const state = basketProcess.reducer({...initialState, basketCameras: [camera1], totalCount: 2, totalPrice: 200}, setCameraCount({ id: camera1.id, count: 2 }));
+    expect(state.basketCameras).toEqual([camera1]);
+    expect(state.totalCount).toBe(2);
+    expect(state.totalPrice).toBe(200);
   });
 
-  it('Should change coupon by a given coupon', () => {
-    expect(basketProcess.reducer(mockState, setCoupon(Coupon.Second)))
-      .toEqual({
-        ...mockState,
-        coupon: Coupon.Second
-      });
+  it('should set the coupon code', () => {
+    const state = basketProcess.reducer(initialState, setCoupon('DISCOUNT10'));
+    expect(state.coupon).toBe('DISCOUNT10');
   });
 
-  it('should reset state', () => {
-    const newState = productsAdapter.removeOne({...mockState, basketCameras: []}, 1);
-
-    expect(basketProcess.reducer(mockState, resetBasket()))
-      .toEqual({ ...newState, totalPrice: 0, totalCount: 0, coupon: 0 });
+  it('should reset the basket', () => {
+    const state = basketProcess.reducer(initialState, resetBasket());
+    expect(state).toEqual({
+      basketCameras: [],
+      isLoading: false,
+      isError: null,
+      totalCount: 0,
+      totalPrice: 0,
+      discount: 0,
+      coupon: 0,
+      ids: [],
+      entities: {},
+    });
   });
 
+  it('should set the error status', () => {
+    const state = basketProcess.reducer(initialState, setErrorStatus(true));
+    expect(state).toEqual({
+      basketCameras: [],
+      isLoading: false,
+      isError: true,
+      totalCount: 0,
+      totalPrice: 0,
+      discount: 0,
+      coupon: 0,
+      ids: [],
+      entities: {},
+    });
+  });
 });

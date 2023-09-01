@@ -6,10 +6,10 @@ import { NameSpace } from '../../../conts';
 import { makeFakeBasketCamera, makeFakeCamera, makeFakePromo } from '../../../mocks';
 import HistoryRouter from '../../history-route/history-route';
 import BasketOrder from './basket-order';
+import { productsAdapter } from '../../../store/basket-process/basket-process';
 
 const mockStore = configureMockStore();
 const camera = makeFakeCamera();
-const basketCamera = makeFakeBasketCamera();
 const history = createMemoryHistory();
 const store = mockStore({
   [NameSpace.Catalog]: {
@@ -23,7 +23,8 @@ const store = mockStore({
     isModalSuccess: false,
   },
   [NameSpace.Basket]: {
-    basketCameras: [basketCamera],
+    ...productsAdapter.getInitialState(),
+    basketCameras: [makeFakeBasketCamera()],
     isLoading: false,
     isError: false,
     totalCount: 0,
@@ -37,7 +38,7 @@ const store = mockStore({
     levels: [],
     minPrice: 0,
     maxPrice: 0,
-  }
+  },
 });
 
 describe('Component: BasketOrder', () => {

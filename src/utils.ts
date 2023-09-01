@@ -8,7 +8,7 @@ import { State } from './types/state';
 export const notify = (text: string) => toast(text);
 
 export function handleScrollTopClick() {
-  window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
+  return window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
 }
 
 export function formatPrice(num: number): string {

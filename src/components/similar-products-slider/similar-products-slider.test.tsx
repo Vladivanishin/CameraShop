@@ -4,7 +4,7 @@ import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
 import HistoryRouter from '../history-route/history-route';
 import { NameSpace, TabsControl } from '../../conts';
-import { makeFakeCamera, makeFakePromo, makeFakeReview } from '../../mocks';
+import { makeFakeBasketCamera, makeFakeCamera, makeFakePromo, makeFakeReview } from '../../mocks';
 import SimilarProductsSlider from './similar-products-slider';
 
 const mockStore = configureMockStore();
@@ -25,6 +25,15 @@ const store = mockStore({
     currentTabControl: TabsControl.Description,
     reviews: [makeFakeReview()],
   },
+  [NameSpace.Basket]: {
+    basketCameras: [makeFakeBasketCamera()],
+    isLoading: false,
+    isError: null,
+    totalCount: 0,
+    totalPrice: 0,
+    discount: 0,
+    coupon: 0,
+  }
 });
 
 describe('Component: slider', () => {

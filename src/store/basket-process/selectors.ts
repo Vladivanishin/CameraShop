@@ -1,4 +1,4 @@
-import { Coupon, NameSpace } from '../../conts';
+import { NameSpace } from '../../conts';
 import { Cameras } from '../../types/catalog';
 import { State } from '../../types/state';
 import { productsAdapter } from './basket-process';
@@ -18,7 +18,7 @@ export const getTotalPrice = (state: State): number =>
 export const getTotalCount = (state: State): number =>
   state[NameSpace.Basket].totalCount;
 
-export const getCoupon = (state: State): Coupon | 0 =>
+export const getCoupon = (state: State): string | 0 =>
   state[NameSpace.Basket].coupon;
 
 export const getDiscountPercent = (state: State): number =>
@@ -27,6 +27,6 @@ export const getDiscountPercent = (state: State): number =>
 export const getLoadingBasketStatus = (state: State): boolean =>
   state[NameSpace.Basket].isLoading;
 
-export const getErrorBasketStatus = (state: State): boolean =>
+export const getErrorBasketStatus = (state: State): boolean | null =>
   state[NameSpace.Basket].isError;
 

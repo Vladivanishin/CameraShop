@@ -15,7 +15,7 @@ export default function ModalProductAdded() : JSX.Element {
 
   return(
     <Modal isOpen={isModalProductAdded} onClose={handleCloseSuccessModal}>
-      <>
+      <div style={{width: 240}}>
         <p className="title title--h4">Товар успешно добавлен в корзину</p>
         <svg className="modal__icon" width="86" height="80" aria-hidden="true">
           <use xlinkHref="#icon-success"></use>
@@ -48,7 +48,7 @@ export default function ModalProductAdded() : JSX.Element {
             <use xlinkHref="#icon-close"></use>
           </svg>
         </button>
-      </>
+      </div>
     </Modal>
   );
 }

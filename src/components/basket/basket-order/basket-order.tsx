@@ -23,15 +23,20 @@ export default function BasketOrder(): JSX.Element {
 
   const handleClick = () => {
     if(currentCoupon === 0){
-      const emptyCoupon = null;
-      dispatch(fetchPostNewOrderAction({ camerasIds: camerasIds, coupon: emptyCoupon }));
+      dispatch(fetchPostNewOrderAction({
+        camerasIds: camerasIds,
+        coupon: null
+      }));
       return;
     }
-    dispatch(fetchPostNewOrderAction({ camerasIds: camerasIds, coupon: currentCoupon }));
+    dispatch(fetchPostNewOrderAction({
+      camerasIds: camerasIds,
+      coupon: currentCoupon
+    }));
   };
 
   return (
-    <div className="basket__summary-order" data-testid="basket-order">
+    <div className="basket__summary-order" data-testid='basket-order'>
       <p className="basket__summary-item">
         <span className="basket__summary-text">Всего:</span>
         <span className="basket__summary-value">{totalPrice} ₽</span>

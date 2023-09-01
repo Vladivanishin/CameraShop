@@ -2,7 +2,7 @@ import { AxiosInstance } from 'axios';
 import { AppDispatch, State } from '../types/state';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Camera, Cameras, ReviewRequest, ReviewResponse, Reviews } from '../types/catalog';
-import { APIRoute, Coupon} from '../conts';
+import { APIRoute } from '../conts';
 import { getRatingCameras, notify } from '../utils';
 import { Promo } from '../types/catalog';
 
@@ -100,9 +100,9 @@ ThunkConfig
 
 export const fetchPostCouponAction = createAsyncThunk<
 number,
-Coupon,
+string,
 ThunkConfig
->('fetchPostCouponAction', async (coupon, { extra: api}) => {
+>('fetchPostCouponAction', async (coupon, { dispatch ,extra: api}) => {
   try {
     const {data} = await api.post<number>(APIRoute.Coupons, {coupon});
     return data;
@@ -114,7 +114,7 @@ ThunkConfig
 
 export const fetchPostNewOrderAction = createAsyncThunk<
 number,
-{ camerasIds: number[]; coupon: Coupon | 0 | null},
+{ camerasIds: number[]; coupon: string | 0 | null},
 ThunkConfig
 >('fetchPostNewOrderAction', async ({camerasIds, coupon}, { extra: api}) => {
   try {

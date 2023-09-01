@@ -1,30 +1,30 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Coupon } from '../../../conts';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
-import { getCoupon } from '../../../store/basket-process/selectors';
+import { getErrorBasketStatus } from '../../../store/basket-process/selectors';
 import { fetchPostCouponAction } from '../../../store/api-actions';
 import clsx from 'clsx';
-import { setCoupon } from '../../../store/basket-process/basket-process';
+import { setCoupon, setErrorStatus } from '../../../store/basket-process/basket-process';
+import { useEffect } from 'react';
 
 
 type PromoFormField = {
-  promo: Coupon;
+  promo: string;
 };
 
 export default function BasketPromo(): JSX.Element {
   const dispatch = useAppDispatch();
+  const isErrorPromo = useAppSelector(getErrorBasketStatus);
+
+  useEffect(() => {
+    dispatch(setErrorStatus(null));
+  },[]);
 
   const {
     register,
     handleSubmit,
-    formState: {
-      errors,
-      isValid
-    },
   } = useForm<PromoFormField>({
     mode: 'onSubmit'
   });
-  const coupon = useAppSelector(getCoupon);
 
   const onSubmit: SubmitHandler<PromoFormField> = (data) => {
 
@@ -40,15 +40,14 @@ export default function BasketPromo(): JSX.Element {
           // eslint-disable-next-line @typescript-eslint/no-misused-promises
           onSubmit={handleSubmit(onSubmit)}
         >
-          <div className={clsx('custom-input', errors.promo && 'is-invalid', isValid && 'is-valid')}>
+          <div className={clsx('custom-input', isErrorPromo === true && 'is-invalid', isErrorPromo === false && 'is-valid')}>
             <label>
               <span className="custom-input__label">Промокод</span>
               <input
                 {...register('promo', {
                   validate: {
                     positive: (value) => {
-
-                      if (value === Coupon.First || value === Coupon.Second || value === Coupon.Third){
+                      if (value){
                         dispatch(setCoupon(value));
                         return true;
                       } else {
@@ -59,12 +58,12 @@ export default function BasketPromo(): JSX.Element {
                 })}
                 type="text"
                 name="promo"
-                defaultValue={coupon || ''}
+                defaultValue={''}
                 placeholder="Введите промокод"
               />
             </label>
-            <p className="custom-input__error">Промокод неверный</p>
-            <p className="custom-input__success">Промокод принят!</p>
+            {isErrorPromo === true && <p className="custom-input__error">Промокод неверный</p>}
+            {isErrorPromo === false && <p className="custom-input__success">Промокод принят!</p>}
           </div>
           <button className="btn" type="submit">
             Применить

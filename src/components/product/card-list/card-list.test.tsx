@@ -4,7 +4,7 @@ import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
 import HistoryRouter from '../../history-route/history-route';
 import { NameSpace } from '../../../conts';
-import { makeFakeCamera, makeFakePromo } from '../../../mocks';
+import { makeFakeBasketCamera, makeFakeCamera, makeFakePromo } from '../../../mocks';
 import CardList from './card-list';
 
 const mockStore = configureMockStore();
@@ -20,6 +20,15 @@ const store = mockStore({
     isModalBuy: false,
     isModalReview: false,
     isModalSuccess: false,
+  },
+  [NameSpace.Basket]: {
+    basketCameras: [makeFakeBasketCamera()],
+    isLoading: false,
+    isError: null,
+    totalCount: 0,
+    totalPrice: 0,
+    discount: 0,
+    coupon: 0,
   }
 });
 

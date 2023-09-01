@@ -8,9 +8,10 @@ import { Provider } from 'react-redux';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { createAPI } from '../../store/services/api';
 import { State } from '../../types/state';
-import { makeFakeCamera, makeFakePromo, makeFakeReview } from '../../mocks';
+import { makeFakeBasketCamera, makeFakeCamera, makeFakePromo, makeFakeReview } from '../../mocks';
 import { AppRoute, NameSpace, TabsControl } from '../../conts';
 import { generatePath } from 'react-router-dom';
+import { productsAdapter } from '../../store/basket-process/basket-process';
 
 const api = createAPI();
 const middlewares = [thunk.withExtraArgument(api)];
@@ -50,7 +51,17 @@ const store = mockStore({
     levels: [],
     minPrice: 0,
     maxPrice: 0,
-  }
+  },
+  [NameSpace.Basket]: {
+    ...productsAdapter.getInitialState(),
+    basketCameras: [makeFakeBasketCamera()],
+    isLoading: false,
+    isError: false,
+    totalCount: 0,
+    totalPrice: 0,
+    discount: 0,
+    coupon: 0,
+  },
 });
 
 const fakeApp = (
