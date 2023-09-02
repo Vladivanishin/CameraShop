@@ -7,6 +7,8 @@ import { NameSpace } from '../../conts';
 import { makeFakeBasketCamera, makeFakeCamera, makeFakePromo } from '../../mocks';
 import SimilarCard from './similar-card';
 
+window.scrollTo = jest.fn();
+
 const mockStore = configureMockStore();
 const camera = makeFakeCamera();
 const history = createMemoryHistory();

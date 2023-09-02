@@ -102,7 +102,7 @@ export const fetchPostCouponAction = createAsyncThunk<
 number,
 string,
 ThunkConfig
->('fetchPostCouponAction', async (coupon, { dispatch ,extra: api}) => {
+>('fetchPostCouponAction', async (coupon, { extra: api }) => {
   try {
     const {data} = await api.post<number>(APIRoute.Coupons, {coupon});
     return data;
