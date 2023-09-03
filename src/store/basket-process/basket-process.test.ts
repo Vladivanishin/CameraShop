@@ -8,6 +8,7 @@ const initialState: EntityState<BasketCamera> & BasketProcess = {
   basketCameras: [],
   isLoading: false,
   isError: null,
+  isPromoValid: false,
   totalCount: 0,
   totalPrice: 0,
   discount: 0,

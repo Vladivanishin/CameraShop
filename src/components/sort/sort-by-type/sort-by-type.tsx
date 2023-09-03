@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
-import { SortType } from '../../../conts';
+import { DEFAULT_PAGINATION_PAGE, SortType } from '../../../conts';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
-import { selectSortType } from '../../../store/catalog-process/catalog-process';
+import { selectSortType, setCurrentPage } from '../../../store/catalog-process/catalog-process';
 import { getSelectedSortType } from '../../../store/catalog-process/selectors';
 
 export default function SortByType(): JSX.Element {
@@ -11,6 +11,7 @@ export default function SortByType(): JSX.Element {
 
   const handleClick = (text: SortType) => {
     dispatch(selectSortType(text));
+    dispatch(setCurrentPage(DEFAULT_PAGINATION_PAGE));
   };
 
   return (

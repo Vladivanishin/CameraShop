@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
-import { SortOrder, sortOrderQueryValue } from '../../../conts';
+import { DEFAULT_PAGINATION_PAGE, SortOrder, sortOrderQueryValue } from '../../../conts';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
-import { selectSortOrder } from '../../../store/catalog-process/catalog-process';
+import { selectSortOrder, setCurrentPage } from '../../../store/catalog-process/catalog-process';
 import { getSelectedSortOrder } from '../../../store/catalog-process/selectors';
 
 
@@ -12,6 +12,7 @@ export default function SortByOrder(): JSX.Element {
 
   const handleClick = (text: SortOrder) => {
     dispatch(selectSortOrder(text));
+    dispatch(setCurrentPage(DEFAULT_PAGINATION_PAGE));
   };
 
   return (

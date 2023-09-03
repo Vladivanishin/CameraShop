@@ -8,16 +8,18 @@ export type BasketProcess = {
   basketCameras: Cameras;
   isLoading: boolean;
   isError: boolean | null;
+  isPromoValid: boolean;
   totalCount: number;
   totalPrice: number;
   discount: number;
-  coupon: string | 0;
+  coupon: string | 0 | null;
 }
 
 export const initialState: BasketProcess = {
   basketCameras: [],
   isLoading: false,
   isError: null,
+  isPromoValid: false,
   totalCount: 0,
   totalPrice: 0,
   discount: 0,
@@ -28,7 +30,8 @@ export const productsAdapter = createEntityAdapter<BasketCamera>();
 
 const localStorageResult = localStorage.getItem('LOCAL_STORAGE');
 
-const stateWithAdapter = getInitialEntityAdapterState(productsAdapter, initialState, localStorageResult);
+const stateWithAdapter = getInitialEntityAdapterState(productsAdapter, {...initialState }, localStorageResult);
+
 
 export const basketProcess = createSlice({
   name: NameSpace.Basket,
@@ -105,11 +108,14 @@ export const basketProcess = createSlice({
         saveToLocalStorage(state);
       }
     },
-    setCoupon: (state, action: {payload: string}) => {
+    setCoupon: (state, action: {payload: string | null}) => {
       state.coupon = action.payload;
     },
     setErrorStatus: (state, action: {payload: boolean | null}) => {
       state.isError = action.payload;
+    },
+    setPromoValidStatus: (state, action: {payload: boolean}) => {
+      state.isPromoValid = action.payload;
     },
     resetBasket() {
       localStorage.removeItem('LOCAL_STORAGE');
@@ -120,13 +126,16 @@ export const basketProcess = createSlice({
     builder
       .addCase(fetchPostCouponAction.pending, (state) => {
         state.isError = null;
+        state.isPromoValid = true;
       })
       .addCase(fetchPostCouponAction.fulfilled, (state, action) => {
         state.discount = action.payload;
         state.isError = false;
+        state.isPromoValid = true;
       })
       .addCase(fetchPostCouponAction.rejected, (state) => {
         state.isError = true;
+        state.isPromoValid = true;
       })
       .addCase(fetchPostNewOrderAction.fulfilled, (state) => {
         state.basketCameras = [];
@@ -143,5 +152,6 @@ export const {
   setCameraCount,
   setCoupon,
   resetBasket,
-  setErrorStatus
+  setErrorStatus,
+  setPromoValidStatus
 } = basketProcess.actions;

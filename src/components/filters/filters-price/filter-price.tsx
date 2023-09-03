@@ -1,6 +1,6 @@
 import { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
-import { getFilteredCameras } from '../../../store/catalog-process/selectors';
+import { getCameras, getFilteredCameras } from '../../../store/catalog-process/selectors';
 import { getCurrentMaxPrice, getCurrentMinPrice } from '../../../store/filters-process/selectors';
 import { getPrice } from '../../../utils';
 import { setMaxPrice, setMinPrice } from '../../../store/filters-process/filters-process';
@@ -12,7 +12,7 @@ type FilterByPriceProps = {
 
 export default function FilterPrice({ isReset }: FilterByPriceProps): JSX.Element {
   const cameras = useAppSelector(getFilteredCameras);
-  const dispatch = useAppDispatch();
+  const allCameras = useAppSelector(getCameras);
 
   const currentMinPrice = useAppSelector(getCurrentMinPrice);
   const currentMaxPrice = useAppSelector(getCurrentMaxPrice);
@@ -20,8 +20,13 @@ export default function FilterPrice({ isReset }: FilterByPriceProps): JSX.Elemen
   const minPrice = getPrice(cameras, 'min');
   const maxPrice = getPrice(cameras, 'max');
 
+  const minPriceAll = getPrice(allCameras, 'min');
+  const maxPriceAll = getPrice(allCameras, 'max');
+
   const [minPriceValue, setMinPriceValue] = useState(currentMinPrice || 0);
   const [maxPriceValue, setMaxPriceValue] = useState(0 || currentMaxPrice);
+
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (isReset) {
@@ -31,34 +36,34 @@ export default function FilterPrice({ isReset }: FilterByPriceProps): JSX.Elemen
   }, [isReset]);
 
   const handleMinPriceInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    const { value } = evt.target;
+    const price = +evt.target.value < 0 || evt.target.value === '-0' ? '' : evt.target.value;
+    if(evt.target.value === '') {
+      setMinPriceValue(+minPriceAll);
+      dispatch(setMinPrice(0));
 
-    setMinPriceValue(+value);
+    }
+    setMinPriceValue(+price);
   };
 
   const handleMaxPriceInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    const { value } = evt.target;
+    const price = +evt.target.value < 0 || evt.target.value === '-0' ? '' : evt.target.value;
 
-    setMaxPriceValue(+value);
-  };
-
-  const handleMinPriceKeyDown = (evt: KeyboardEvent<HTMLInputElement>) => {
-    if (evt.code === KeyCode.Enter) {
-      handleMinPriceBlur();
+    if(evt.target.value === '') {
+      setMaxPriceValue(+maxPriceAll);
+      dispatch(setMaxPrice(0));
     }
+    setMaxPriceValue(+price);
   };
 
-  const handleMaxPriceKeyDown = (evt: KeyboardEvent<HTMLInputElement>) => {
-    if (evt.code === KeyCode.Enter) {
-      handleMaxPriceBlur();
-    }
-  };
-
-  const handleMinPriceBlur = () => {
+  const checkMinPrice = () => {
     if (!minPriceValue) {
       setMinPriceValue(0);
       dispatch(setMinPrice(0));
 
+      return;
+    }
+
+    if (minPriceValue < +minPrice && cameras.length < allCameras.length) {
       return;
     }
 
@@ -79,11 +84,17 @@ export default function FilterPrice({ isReset }: FilterByPriceProps): JSX.Elemen
     dispatch(setMinPrice(minPriceValue));
   };
 
-  const handleMaxPriceBlur = () => {
+  const checkMaxPrice = () => {
+
     if (!maxPriceValue) {
       setMaxPriceValue(0);
       dispatch(setMaxPrice(0));
 
+      return;
+    }
+
+
+    if (maxPriceValue > +maxPrice && cameras.length < allCameras.length) {
       return;
     }
 
@@ -103,6 +114,27 @@ export default function FilterPrice({ isReset }: FilterByPriceProps): JSX.Elemen
 
     dispatch(setMaxPrice(maxPriceValue));
   };
+
+  const handleMinPriceBlur = () => {
+    checkMinPrice();
+  };
+
+  const handleMaxPriceBlur = () => {
+    checkMaxPrice();
+  };
+
+  const handleMinPriceKeyDown = (evt: KeyboardEvent<HTMLInputElement>) => {
+    if (evt.code === KeyCode.Enter) {
+      checkMinPrice();
+    }
+  };
+
+  const handleMaxPriceKeyDown = (evt: KeyboardEvent<HTMLInputElement>) => {
+    if (evt.code === KeyCode.Enter) {
+      checkMaxPrice();
+    }
+  };
+
 
   return (
     <fieldset className="catalog-filter__block" data-testid="filter-price">

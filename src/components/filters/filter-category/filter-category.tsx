@@ -1,5 +1,6 @@
-import { CameraCategory } from '../../../conts';
+import { CameraCategory, DEFAULT_PAGINATION_PAGE } from '../../../conts';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
+import { setCurrentPage } from '../../../store/catalog-process/catalog-process';
 import { changeCategory } from '../../../store/filters-process/filters-process';
 import { getCurrentCategory } from '../../../store/filters-process/selectors';
 
@@ -16,6 +17,7 @@ export default function FilterCategory(): JSX.Element {
     }
 
     dispatch(changeCategory(category));
+    dispatch(setCurrentPage(DEFAULT_PAGINATION_PAGE));
   };
 
 

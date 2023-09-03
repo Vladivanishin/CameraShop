@@ -47,7 +47,12 @@ export default function BasketPromo(): JSX.Element {
                 {...register('promo', {
                   validate: {
                     positive: (value) => {
-                      if (value){
+                      if (value.length === 1 || value.length !== 1){
+                        dispatch(setCoupon(null));
+                        dispatch(setErrorStatus(null));
+                        return true;
+                      }
+                      else if (value){
                         dispatch(setCoupon(value));
                         return true;
                       } else {
