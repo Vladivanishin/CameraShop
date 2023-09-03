@@ -8,7 +8,6 @@ export type BasketProcess = {
   basketCameras: Cameras;
   isLoading: boolean;
   isError: boolean | null;
-  isPromoValid: boolean;
   totalCount: number;
   totalPrice: number;
   discount: number;
@@ -19,7 +18,6 @@ export const initialState: BasketProcess = {
   basketCameras: [],
   isLoading: false,
   isError: null,
-  isPromoValid: false,
   totalCount: 0,
   totalPrice: 0,
   discount: 0,
@@ -114,9 +112,6 @@ export const basketProcess = createSlice({
     setErrorStatus: (state, action: {payload: boolean | null}) => {
       state.isError = action.payload;
     },
-    setPromoValidStatus: (state, action: {payload: boolean}) => {
-      state.isPromoValid = action.payload;
-    },
     resetBasket() {
       localStorage.removeItem('LOCAL_STORAGE');
       return productsAdapter.getInitialState(initialState);
@@ -126,16 +121,13 @@ export const basketProcess = createSlice({
     builder
       .addCase(fetchPostCouponAction.pending, (state) => {
         state.isError = null;
-        state.isPromoValid = true;
       })
       .addCase(fetchPostCouponAction.fulfilled, (state, action) => {
         state.discount = action.payload;
         state.isError = false;
-        state.isPromoValid = true;
       })
       .addCase(fetchPostCouponAction.rejected, (state) => {
         state.isError = true;
-        state.isPromoValid = true;
       })
       .addCase(fetchPostNewOrderAction.fulfilled, (state) => {
         state.basketCameras = [];
@@ -153,5 +145,4 @@ export const {
   setCoupon,
   resetBasket,
   setErrorStatus,
-  setPromoValidStatus
 } = basketProcess.actions;

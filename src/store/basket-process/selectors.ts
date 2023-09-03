@@ -29,6 +29,3 @@ export const getLoadingBasketStatus = (state: State): boolean =>
 
 export const getErrorBasketStatus = (state: State): boolean | null =>
   state[NameSpace.Basket].isError;
-
-export const getPromoValidStatus = (state: State): boolean =>
-  state[NameSpace.Basket].isPromoValid;
