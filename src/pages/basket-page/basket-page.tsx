@@ -14,7 +14,7 @@ export default function BasketPage ():JSX.Element{
   const body = document.querySelector('body');
   const isModalSuccessOrder = useAppSelector(getModalSuccessOrder);
 
-  if(isModalRemove === true){
+  if(isModalRemove === true || isModalSuccessOrder === true){
     body?.classList.add('scroll-lock');
   } else {
     body?.classList.remove('scroll-lock');

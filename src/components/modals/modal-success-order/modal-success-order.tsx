@@ -3,6 +3,8 @@ import { getModalSuccessOrder } from '../../../store/catalog-process/selectors';
 import Modal from '../modal/modal';
 import { setModalSuccessOrder } from '../../../store/catalog-process/catalog-process';
 import { resetBasket } from '../../../store/basket-process/basket-process';
+import { Link } from 'react-router-dom';
+import { AppRoute } from '../../../conts';
 
 export default function ModalSuccessOrder() : JSX.Element {
   const dispatch = useAppDispatch();
@@ -21,12 +23,13 @@ export default function ModalSuccessOrder() : JSX.Element {
           <use xlinkHref="#icon-review-success"></use>
         </svg>
         <div className="modal__buttons">
-          <button className="btn btn--purple modal__btn modal__btn--fit-width"
+          <Link className="btn btn--purple modal__btn modal__btn--fit-width"
             type="button"
+            to={AppRoute.Catalog}
             onClick={() => handleCloseSuccessModal()}
             tabIndex={1}
           >Вернуться к покупкам
-          </button>
+          </Link>
         </div>
         <button className="cross-btn"
           type="button"

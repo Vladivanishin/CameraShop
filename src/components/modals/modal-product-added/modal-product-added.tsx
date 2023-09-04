@@ -21,15 +21,16 @@ export default function ModalProductAdded() : JSX.Element {
           <use xlinkHref="#icon-success"></use>
         </svg>
         <div className="modal__buttons">
-          <button
+          <Link
             className="btn btn--transparent modal__btn"
             type="button"
             aria-label="Закрыть попап"
+            to={AppRoute.Catalog}
             onClick={() => handleCloseSuccessModal()}
             tabIndex={1}
             data-testid='button'
           >Продолжить покупки
-          </button>
+          </Link>
           <Link
             className="btn btn--purple modal__btn modal__btn--fit-width"
             to={AppRoute.Basket}
